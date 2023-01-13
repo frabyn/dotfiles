@@ -1,0 +1,26 @@
+[".config/alacritty/themes"]
+    type = "git-repo"
+    url = "https://github.com/eendroroy/alacritty-theme.git"
+    exact = true
+    stripComponents = 1
+
+[".config/zsh/oh-my-zsh"]
+    type = "git-repo"
+    url = "https://github.com/ohmyzsh/ohmyzsh.git"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+
+[".config/zsh/oh-my-zsh/custom/themes/spaceship-prompt"]
+    type = "git-repo"
+    url = "https://github.com/spaceship-prompt/spaceship-prompt.git"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+
+[".local/share/nvim/site/pack/packer/start/packer.nvim"]
+    type = "git-repo"
+    url = "https://github.com/wbthomason/packer.nvim"
+    exact = true
+    stripComponents = 1
+

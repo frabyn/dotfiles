@@ -1,0 +1,42 @@
+[general]
+
+accounts = Fastmail
+
+metadata = ~/.local/share/offlineimap
+
+pythonfile = ~/.config/offlineimap/offlineimap.py
+
+[Account Fastmail]
+localrepository = FastmailLocal
+remoterepository = FastmailRemote
+
+[Repository FastmailLocal]
+
+type = Maildir
+
+localfolders = ~/Maildir
+
+[Repository FastmailRemote]
+type = IMAP
+starttls = no
+ssl = yes
+remotehost = imaps-proxy.fastmail.com
+
+
+sslcacertfile = OS-DEFAULT
+
+remoteport = 80
+
+remoteuser = franklin@bynumlaw.net
+
+remotepasseval = get_pass("Fastmail")
+
+[mbnames]
+enabled = yes
+filename = ~/.local/share/mutt/mailboxes
+header = "mailboxes "
+peritem = +%(foldername)s
+sep = " "
+footer = "\n"
+maxsyncaccounts = 1
+maxconnections = 1

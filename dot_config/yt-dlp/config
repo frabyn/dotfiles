@@ -1,0 +1,2 @@
+# Save all videos under YouTube directory in home directory
+-o ~/Videos/YouTube/%(title)s.%(ext)s

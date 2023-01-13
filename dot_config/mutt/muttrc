@@ -1,0 +1,77 @@
+# IMAP: offlineimap
+set mbox_type = Maildir
+set folder = "~/Maildir"
+source ~/.local/share/mutt/mailboxes
+set spoolfile = "+INBOX"
+set record = "+Sent"
+set postponed = "+Drafts"
+
+# currently this is config for neomutt, need to replace
+# source ~/.config/mutt/colors-monokai.muttrc 
+
+set realname = "Franklin Bynum"
+set from = "franklin@bynumlaw.net"
+
+alternative_order multipart/mixed multipart/related text/plain text/html
+
+set mailcap_path = ~/.mutt/mailcap
+
+auto_view text/html
+
+set markers = no
+
+mime_lookup application/octet-stream
+
+set quit = yes
+set sort = threads
+
+set editor = "nvim"
+
+unignore x-mailer
+
+# set sidebar_visible = yes
+# set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+# set sidebar_width = 20
+
+set sendmail = ~/.local/bin/msmtpq
+set sendmail_wait = -1
+
+set delete=yes                  # purge deleted messages without asking
+set record=yes                  # save copies of sent messages
+set fast_reply=yes              # skip initial prompts when replying
+set include=yes
+set reply_to=yes                # reply-to address of sender
+
+set check_new=no
+set mail_check_recent=no
+set mail_check_stats = yes
+set mail_check=0
+
+set new_mail_command=""
+set indent_string = "> "
+macro index a "<save-message>=Archive<Enter><Enter>"
+
+set change_folder_next = yes
+
+set query_command = "khard email --parsable %s"
+bind editor <Tab> complete-query
+bind editor ^T    complete
+macro index <F8> \
+"<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
+<shell-escape>notmuch-mutt -r --prompt search<enter>\
+<change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
+<enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
+"notmuch: search mail"
+
+macro index <F9> \
+"<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
+<pipe-message>notmuch-mutt -r thread<enter>\
+<change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
+<enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
+"notmuch: reconstruct thread"
+
+macro index <F6> \
+"<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
+<pipe-message>notmuch-mutt tag -- -inbox<enter>\
+<enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
+"notmuch: remove message from inbox"

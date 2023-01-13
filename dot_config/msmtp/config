@@ -1,0 +1,20 @@
+# Set default values for all following accounts.
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        ~/log/msmtp.log
+
+# Fastmail
+account        Fastmail
+tls_starttls   off
+host           smtps-proxy.fastmail.com
+port           80
+user           franklin@bynumlaw.net
+# To store the secret, run
+# secret-tool store --label "Fastmail SMTP" host smtps-proxy.fastmail.com
+passwordeval   "secret-tool lookup host smtps-proxy.fastmail.com"
+from           franklin@bynumlaw.net
+
+# Set a default account
+account default : Fastmail
