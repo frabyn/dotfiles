@@ -6,6 +6,8 @@ set spoolfile = "+INBOX"
 set record = "+Sent"
 set postponed = "+Drafts"
 
+
+
 # currently this is config for neomutt, need to replace
 # source ~/.config/mutt/colors-monokai.muttrc 
 
@@ -37,7 +39,6 @@ set sendmail = ~/.local/bin/msmtpq
 set sendmail_wait = -1
 
 set delete=yes                  # purge deleted messages without asking
-set record=yes                  # save copies of sent messages
 set fast_reply=yes              # skip initial prompts when replying
 set include=yes
 set reply_to=yes                # reply-to address of sender
