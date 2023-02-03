@@ -2,9 +2,14 @@ require("plugins")
 require("mappings")
 require("options")
 require('telescope').load_extension('projects')
+require'py_lsp'.setup {
+  host_python = "/opt/homebrew/bin/python3",
+  default_venv_name = ".venv" -- For local venv
+ }
+require"fidget".setup{}
 require('lualine').setup {
     options = {
-        icons_enabled = true,
+        icons_enabled = false,
         theme = 'sonokai',
         component_separators = { left = '', right = ''},
         section_separators = { left = '', right = ''},

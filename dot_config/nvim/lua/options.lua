@@ -17,8 +17,3 @@ vim.cmd("filetype plugin on")
 vim.opt.ttyfast = true                 -- Speed up scrolling in Vim
 vim.cmd("set termguicolors")
 vim.cmd("colorscheme sonokai")
-vim.lsp.start({
-  name = 'pylsp',
-  cmd = {'pylsp'},
-  root_dir = vim.fs.dirname(vim.fs.find({'setup.py', 'pyproject.toml'}, { upward = true })[1]),
-})

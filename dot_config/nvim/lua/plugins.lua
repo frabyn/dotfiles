@@ -7,6 +7,10 @@ return require('packer').startup(function()
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
 }
 
+use 'github/copilot.vim'
+use 'HallerPatrick/py_lsp.nvim'
+use 'j-hui/fidget.nvim'
+
 use {'nvim-telescope/telescope-fzf-native.nvim', 
 run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 
@@ -66,7 +70,7 @@ end,
         }
     end
 }
---    use 'neovim/nvim-lspconfig'
+use 'neovim/nvim-lspconfig'
 use 'sainnhe/sonokai'
 use 'preservim/vim-pencil'
 use 'tpope/vim-sensible'
@@ -74,5 +78,4 @@ use 'tpope/vim-fugitive'
 use 'tpope/vim-surround'
 use 'tpope/vim-commentary'
 use 'ryanoasis/vim-devicons'
-use '~/other-projects/himalaya-vim'
 end)
