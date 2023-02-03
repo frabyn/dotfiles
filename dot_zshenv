@@ -1,2 +1,2 @@
-ZDOTDIR=/home/franklin/.config/zsh
+ZDOTDIR=$HOME/.config/zsh
 
