@@ -10,7 +10,7 @@ return require('packer').startup(function()
 use 'github/copilot.vim'
 use 'HallerPatrick/py_lsp.nvim'
 use 'j-hui/fidget.nvim'
-
+use 'folke/which-key.nvim'
 use {'nvim-telescope/telescope-fzf-native.nvim', 
 run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 
