@@ -10,7 +10,19 @@ return require('packer').startup(function()
 use 'github/copilot.vim'
 use 'HallerPatrick/py_lsp.nvim'
 use 'j-hui/fidget.nvim'
-use 'folke/which-key.nvim'
+use {
+  "folke/which-key.nvim",
+  config = function()
+    vim.o.timeout = true
+    vim.o.timeoutlen = 300
+    require("which-key").setup {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  end
+}
+
 use {'nvim-telescope/telescope-fzf-native.nvim', 
 run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 
