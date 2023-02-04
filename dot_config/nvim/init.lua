@@ -3,7 +3,7 @@ require("mappings")
 require("options")
 require('telescope').load_extension('projects')
 require'py_lsp'.setup {
-  host_python = "/opt/homebrew/bin/python3",
+--  host_python = "/opt/homebrew/bin/python3",
   default_venv_name = ".venv" -- For local venv
  }
 require"fidget".setup{}
