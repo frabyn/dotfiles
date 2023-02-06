@@ -30,11 +30,11 @@ export PAGER='bat'
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 
-{{ if eq .chezmoi.os "darwin" }}
+{{ if eq .chezmoi.os "darwin" -}}
 alias nv="vimr"
 alias less='bat'
 alias cat='bat'
-{{ else if eq .chezmoi.os "linux" }}
+{{ else if eq .chezmoi.os "linux" -}}
 alias vim="nvim"
 alias nv="nvim"
 alias less='bat'
