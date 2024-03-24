@@ -50,13 +50,19 @@ set mail_check=0
 
 set new_mail_command=""
 set indent_string = "> "
+
 macro index a "<save-message>=Archive<Enter><Enter>"
+macro index R "<save-message>=Receipts<Enter><Enter>"
 
 set change_folder_next = yes
 
 set query_command = "khard email --parsable %s"
 bind editor <Tab> complete-query
 bind editor ^T    complete
+
+macro index A <pipe-message>~/code/mutt-scripts/file_email_updated.sh
+
+
 macro index <F8> \
 "<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
 <shell-escape>notmuch-mutt -r --prompt search<enter>\
