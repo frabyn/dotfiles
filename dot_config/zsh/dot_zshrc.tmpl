@@ -5,6 +5,10 @@ export PATH=$HOME/.local/bin:$HOME/.cargo/bin:$PATH
 
 plugins=(git python)
 
+# Python plugin config
+export PYTHON_VENV_NAME=".venv"
+export PYTHON_AUTO_VRUN=true
+
 export ZSH="$HOME/.config/zsh/oh-my-zsh"
 
 ZSH_CACHE_DIR="$HOME/.cache/ohmyzsh"
@@ -15,17 +19,13 @@ ZSH_THEME="franklin" #based off of "miloshadzic"
 
 HIST_STAMPS="yyyy-mm-dd"
 
-# Python plugin config
-export PYTHON_VENV_NAME=".venv"
-export PYTHON_AUTO_VRUN=true
-
 source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='vi'
  else
-   export EDITOR='vim'
+   export EDITOR='code -w'
  fi
 
 export PAGER='bat'
