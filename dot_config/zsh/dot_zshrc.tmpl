@@ -30,6 +30,8 @@ source $ZSH/oh-my-zsh.sh
 
 export PAGER='bat'
 
+export SSH_AUTH_SOCK=~/.1password/agent.sock
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -42,3 +44,4 @@ alias jr="python manage.py runserver"
 alias jmm="python manage.py makemigrations"
 alias jm="python manage.py migrate"
 alias jsu="python manage.py createsuperuser --email franklin@bynumlaw.net --username franklin"
+eval "$(gh copilot alias -- zsh)"
