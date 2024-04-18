@@ -20,7 +20,9 @@ ZSH_THEME="franklin" #based off of "miloshadzic"
 HIST_STAMPS="yyyy-mm-dd"
 
 {{ if eq .chezmoi.os "darwin" }}
+
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
 {{ end }}
 
 source $ZSH/oh-my-zsh.sh
