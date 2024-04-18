@@ -21,6 +21,7 @@ HIST_STAMPS="yyyy-mm-dd"
 
 # Zsh completions for Homebrew on MacOS
 # https://docs.brew.sh/Shell-Completion
+
 {{- if eq .chezmoi.os "darwin" -}}
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 {{ end -}}
