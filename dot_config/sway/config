@@ -23,7 +23,7 @@ set $menu "rofi -theme Monokai -show drun"
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/franklin/Pictures/Wallpapers/t440_exploded.png fit
+# output * bg /home/franklin/Pictures/Wallpapers/t440_exploded.png fit
 #
 # Example configuration:
 #
