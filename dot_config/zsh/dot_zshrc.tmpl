@@ -23,6 +23,8 @@ HIST_STAMPS="yyyy-mm-dd"
 
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
+export HOMEBREW_NO_ENV_HINTS=false
+
 {{ end }}
 
 source $ZSH/oh-my-zsh.sh
