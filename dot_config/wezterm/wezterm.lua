@@ -29,8 +29,8 @@ return {
 		font_size = 14.0,
 	},
 	window_background_opacity = 0.9,
-	initial_cols = 120,
-	initial_rows = 36,
+	initial_cols = 100,
+	initial_rows = 24,
 	audible_bell = "Disabled",
 	visual_bell = {
 		fade_in_duration_ms = 75,
