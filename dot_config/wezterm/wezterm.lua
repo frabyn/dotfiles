@@ -30,7 +30,7 @@ return {
 	},
 	window_background_opacity = 0.9,
 	initial_cols = 100,
-	initial_rows = 50,
+	initial_rows = 33,
 	audible_bell = "Disabled",
 	visual_bell = {
 		fade_in_duration_ms = 75,
