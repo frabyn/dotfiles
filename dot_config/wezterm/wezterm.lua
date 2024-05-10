@@ -28,7 +28,7 @@ return {
 		font = wezterm.font({ family = "Berkeley Mono", weight = "Bold" }),
 		font_size = 14.0,
 	},
-	window_background_opacity = 0.9,
+	window_background_opacity = 0.95,
 	initial_cols = 100,
 	initial_rows = 33,
 	audible_bell = "Disabled",
