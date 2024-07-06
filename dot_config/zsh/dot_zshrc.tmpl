@@ -33,7 +33,7 @@ source $ZSH/oh-my-zsh.sh
  if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='vi'
  else
-   export EDITOR='code -w'
+   export EDITOR='nvim'
  fi
 
 export PAGER='bat'
@@ -46,10 +46,5 @@ export SSH_AUTH_SOCK=~/.1password/agent.sock
 
 alias less='bat'
 alias cat='bat'
-alias vim="nvim"
+alias vim='nvim'
 
-alias jr="python manage.py runserver"
-alias jmm="python manage.py makemigrations"
-alias jm="python manage.py migrate"
-alias jsu="python manage.py createsuperuser --email franklin@bynumlaw.net --username franklin"
-eval "$(gh copilot alias -- zsh)"
