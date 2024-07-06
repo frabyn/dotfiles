@@ -19,10 +19,10 @@
 (menu-bar-mode -1)
 
 ;; Disable the tool bar
-; (tool-bar-mode -1)
+(tool-bar-mode -1)
 
 ;; Disable the scroll bars
-;(scroll-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; Disable splash screen
 (setq inhibit-startup-screen t)
@@ -31,7 +31,7 @@
 (setq visible-bell t)
 
 ;; Fringe for space
-;(set-fringe-mode 10)
+(set-fringe-mode 10)
 
 ;; Initialize package sources
 (require 'package)
@@ -81,7 +81,7 @@
          ("C-x b" . counsel-ibuffer)
          ("C-x C-f" . counsel-find-file)
          :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history)))
+         ("C-r" . counsel-minibuffer-history)))
 
 
 
