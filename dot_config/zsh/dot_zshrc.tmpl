@@ -33,10 +33,10 @@ source $ZSH/oh-my-zsh.sh
  if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='vi'
  else
-   export EDITOR='nvim'
+   export EDITOR='vim'
  fi
 
-export PAGER='bat'
+# export PAGER='bat'
 
 export SSH_AUTH_SOCK=~/.1password/agent.sock
 
@@ -44,7 +44,7 @@ export SSH_AUTH_SOCK=~/.1password/agent.sock
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 
-alias less='bat'
-alias cat='bat'
+# alias less='bat'
+# alias cat='bat'
 alias vim='nvim'
 
