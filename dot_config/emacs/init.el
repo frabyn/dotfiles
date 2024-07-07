@@ -50,60 +50,18 @@
 
 ; (use-package command-log-mode)
 
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper-isearch)
-	 ("M-y" . counsel-yank-pop))
-	 
-  :config
-  (ivy-mode 1))
-
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode 1))
+  :hook (after-init . doom-modeline-mode))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
-
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 1))
-
-(use-package ivy-rich
-  :init
-  (ivy-rich-mode 1))
-
-(use-package counsel
-  :bind (("M-x" . counsel-M-x)
-         ("C-x b" . counsel-ibuffer)
-         ("C-x C-f" . counsel-find-file)
-         :map minibuffer-local-map
-         ("C-r" . counsel-minibuffer-history)))
-
-
 
 ;; Enable line numbering in `prog-mode'
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 ;; Automatically pair parentheses
 (electric-pair-mode t)
-
-(use-package projectile
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  ;; NOTE: Set this to the folder where you keep your Git repos!
-  (when (file-directory-p "~/code/")
-    (setq projectile-project-search-path '("~/code/")))
-  (setq projectile-switch-project-action #'projectile-dired))
-
-(use-package counsel-projectile
-  :config (counsel-projectile-mode))
 
 (use-package magit
   :custom
@@ -127,8 +85,6 @@
 
 (use-package lsp-treemacs
   :after lsp)
-
-(use-package lsp-ivy)
 
 (use-package lsp-pyright
   :ensure t
@@ -166,7 +122,6 @@
 (use-package markdown-mode)
 
 ;;; Outline-based notes management and organizer
-(global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
 
 ;; Miscellaneous options
