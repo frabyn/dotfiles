@@ -1,17 +1,16 @@
+;;; package --- Main init file
+;;; Commentary:
+;;; This is my init file
+
+;;; Code:
 
 ;; -*- lexical-binding: t -*-
 
-;; Save the contents of this file under ~/.emacs.d/init.el
-;; Do not forget to use Emacs' built-in help system:
-;; Use C-h C-h to get an overview of all help commands.  All you
-;; need to know about Emacs (what commands exist, what functions do,
-;; what variables specify), the help system can provide.
-
-;; Set default font face
-
-(add-to-list 'default-frame-alist '(height . 25))
+;; Size initial frame
+(add-to-list 'default-frame-alist '(height . 30))
 (add-to-list 'default-frame-alist '(width . 100))
 
+;; Set default font face
 (set-face-attribute 'default nil :font "BlexMono Nerd Font" :height 180)
 
 ;; Disable the menu bar
@@ -32,26 +31,32 @@
 ;; Fringe for space
 (set-fringe-mode 10)
 
-;; Initialize package sources
-(require 'package)
+;; Bootstrap straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+      (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+        "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+        'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+;; Use straight.el for use-package expressions
+(straight-use-package 'use-package)
 
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
+;; Use straight.el by default with use-package
+(setq straight-use-package-by-default t)
 
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+;; Install and use my fave theme
+(use-package monokai-theme)
 
-(require 'use-package)
-(setq use-package-always-ensure t)
-
-; (use-package command-log-mode)
+(load-theme 'monokai t)
 
 (use-package doom-modeline
-  :ensure t
   :hook (after-init . doom-modeline-mode))
 
 (use-package rainbow-delimiters
@@ -63,6 +68,29 @@
 ;; Automatically pair parentheses
 (electric-pair-mode t)
 
+(use-package vertico
+  :bind (:map vertico-map
+         ("C-j" . vertico-next)
+         ("C-k" . vertico-previous)
+         ("C-f" . vertico-exit)
+         :map minibuffer-local-map
+         ("M-h" . backward-kill-word))
+  :custom
+  (vertico-cycle t)
+  :init
+  (vertico-mode))
+
+(use-package savehist
+  :init
+  (savehist-mode))
+
+(use-package marginalia
+  :after vertico
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  :init
+  (marginalia-mode))
+
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
@@ -70,59 +98,17 @@
 ;; Bind the `magit-status' command to a convenient key.
 (global-set-key (kbd "C-c g") #'magit-status)
 
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :hook (lsp-mode . efs/lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :config
-  (lsp-enable-which-key-integration t))
-
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom))
-
-(use-package lsp-treemacs
-  :after lsp)
-
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp))))  ; or lsp-deferred
-
-(use-package company
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
-  :bind (:map company-active-map
-         ("<tab>" . company-complete-selection))
-        (:map lsp-mode-map
-         ("<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
-
-(use-package company-box
-  :hook (company-mode . company-box-mode))
-
 ;; Enabled inline static analysis
 (add-hook 'prog-mode-hook #'flymake-mode)
 
 ;; Display messages when idle, without prompting
 (setq help-at-pt-display-when-idle t)
 
-;;; Lua Support
-(use-package lua-mode)
-
 ;;; YAML Support
 (use-package yaml-mode)
 
 ;;; Markdown support
 (use-package markdown-mode)
-
-;;; Outline-based notes management and organizer
-(global-set-key (kbd "C-c a") #'org-agenda)
 
 ;; Miscellaneous options
 (setq-default major-mode
@@ -143,8 +129,6 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (when (file-exists-p custom-file)
   (load custom-file))
-
-(load-theme 'monokai t)
 
 (setq warning-minimum-level :error)
 
