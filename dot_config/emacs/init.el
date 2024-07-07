@@ -1,4 +1,5 @@
-;;; Personal configuration -*- lexical-binding: t -*-
+
+;; -*- lexical-binding: t -*-
 
 ;; Save the contents of this file under ~/.emacs.d/init.el
 ;; Do not forget to use Emacs' built-in help system:
@@ -8,12 +9,10 @@
 
 ;; Set default font face
 
-(add-to-list 'default-frame-alist '(height . 37))
+(add-to-list 'default-frame-alist '(height . 25))
 (add-to-list 'default-frame-alist '(width . 100))
 
 (set-face-attribute 'default nil :font "BlexMono Nerd Font" :height 180)
-
-(load-theme 'monokai t)
 
 ;; Disable the menu bar
 (menu-bar-mode -1)
@@ -190,6 +189,7 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+(load-theme 'monokai t)
 
 (setq warning-minimum-level :error)
 
