@@ -221,6 +221,10 @@
                           (require 'lsp-pyright)
                           (lsp))))  ; or lsp-deferred
 
+(use-package python-black
+  :after python
+  :hook (python-mode . python-black-on-save-mode-enable-dwim))
+
 (use-package lsp-treemacs
   :after lsp)
 
