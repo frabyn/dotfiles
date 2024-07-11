@@ -11,7 +11,7 @@
 (add-to-list 'default-frame-alist '(width . 100))
 
 ;; Set default font face
-(set-face-attribute 'default nil :font "BlexMono Nerd Font" :height 180)
+(set-face-attribute 'default nil :font "BerkeleyMono Nerd Font" :height 180)
 
 ;; Disable the menu bar
 (menu-bar-mode -1)
@@ -56,10 +56,6 @@
 
 (load-theme 'monokai t)
 
-(use-package all-the-icons)
-(use-package all-the-icons-nerd-fonts)
-(use-package treemacs-all-the-icons)
-
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode))
 
@@ -77,8 +73,6 @@
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 0.3))
-
-(use-package all-the-icons)
 
 (use-package vertico
   :bind (:map vertico-map
@@ -262,8 +256,6 @@
                 (unless buffer-file-name
                   (let ((buffer-file-name (buffer-name)))
                     (set-auto-mode)))))
-
-(use-package all-the-icons)
 
 ;(setq confirm-kill-emacs #'yes-or-no-p)
 (setq window-resize-pixelwise t)
