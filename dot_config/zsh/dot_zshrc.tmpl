@@ -19,6 +19,7 @@ ZSH_THEME="franklin" #based off of "miloshadzic"
 
 HIST_STAMPS="yyyy-mm-dd"
 
+# MacOS-specific configuation 
 {{ if eq .chezmoi.os "darwin" }}
 
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
@@ -36,6 +37,7 @@ source $ZSH/oh-my-zsh.sh
    export EDITOR='vim'
  fi
 
+# bat is not available everywhere so this breaks things
 # export PAGER='bat'
 
 export SSH_AUTH_SOCK=~/.1password/agent.sock
@@ -44,7 +46,12 @@ export SSH_AUTH_SOCK=~/.1password/agent.sock
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 
-# alias less='bat'
-# alias cat='bat'
 alias v='nvim'
 
+# Load toolbox configuration
+if [ -f /run/.toolboxenv ]; then
+    source /run/.containerenv
+    if [ -f ~/.config/containers/.toolbox-$name.rc ]; then
+        source ~/.config/containers/.toolbox-$name.rc
+    fi
+fi
