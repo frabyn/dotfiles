@@ -51,7 +51,7 @@ alias v='nvim'
 # Load toolbox configuration
 if [ -f /run/.toolboxenv ]; then
     source /run/.containerenv
-    if [ -f ~/.config/containers/.toolbox-$name.rc ]; then
-        source ~/.config/containers/.toolbox-$name.rc
+    if [ -f ~/.config/containers/toolbox-$name.rc ]; then
+        source ~/.config/containers/toolbox-$name.rc
     fi
 fi
