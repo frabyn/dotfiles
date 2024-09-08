@@ -1,0 +1,299 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{lawdata}%[Handling Law Data]
+
+\RequirePackage{etoolbox,calc,kvoptions,ifthen}%keyvals
+
+
+%\newcommand*{\docket}[1]{\def\@docket{#1}}
+
+%\def\@leadlawyerposition{Lead Counsel for~Appellant}
+%\def\@secondarylawyerposition{Counsel for Appellant}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Court definitions
+
+\define@key{court}{name}{\csdef{\court@tag @name}{#1}}
+\define@key{court}{address}{\csdef{\court@tag @address}{#1}}
+\define@key{court}{place}{\csdef{\court@tag @place}{#1}}
+\define@key{court}{state}{\csdef{\court@tag @state}{#1}}
+\define@key{court}{website}{\csdef{\court@tag @website}{#1}}
+\define@key{court}{zipcode}{\csdef{\court@tag @zipcode}{#1}}
+\define@key{court}{phone}{\csdef{\court@tag @phone}{#1}}
+\define@key{court}{city}{\csdef{\court@tag @city}{#1}}
+\define@key{court}{email}{\csdef{\court@tag @email}{#1}}
+
+
+\newcommand\SetupCourt[2]{%
+\def\court@tag{#1}
+\setkeys{court}{name={},address={\@empty},place={},state={},%
+website={},zipcode={},phone={},city={},email={},#2}
+}
+
+\global\let\SetupClerkOffice\SetupCourt
+
+\newcommand\PrintCourtName[1]{%
+\csuse{#1@name}%
+}
+
+\newcommand\PrintCourtPlace[1]{%
+%#\edef\tmp@place\csuse{#1@place}
+%#\ifblank{\tmp@place}{}{\tmp@place}
+\ifthenelse{\equal{\csuse{#1@place}}{}}{}{\csuse{#1@place} County, \csuse{#1@state}}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Persons definitions
+
+\define@key{person}{name}{\csdef{\person@tag @name}{#1}}
+\define@key{person}{position}{\csdef{\person@tag @position}{#1}}
+\define@key{person}{address}{\csdef{\person@tag @address}{#1}}
+\define@key{person}{office}{\csdef{\person@tag @office}{#1}}
+\define@key{person}{phone}{\csdef{\person@tag @phone}{#1}}
+\define@key{person}{barnumber}{\csdef{\person@tag @barnumber}{#1}}
+\define@key{person}{email}{\csdef{\person@tag @email}{#1}}
+\define@key{person}{inmateid}{\csdef{\person@tag @inmateid}{#1}}
+\define@key{person}{fax}{\csdef{\person@tag @fax}{#1}}
+\define@key{person}{sex}{\csdef{\person@tag @sex}{#1}}
+\define@key{person}{race}{\csdef{\person@tag @race}{#1}}
+\define@key{person}{dateofbirth}{\csdef{\person@tag @dateofbirth}{#1}}
+\define@key{person}{SSN}{\csdef{\person@tag @SSN}{#1}}
+\define@key{person}{DLN}{\csdef{\person@tag @DLN}{#1}}
+
+
+\newcommand\SetupPerson[2]{%
+\def\person@tag{#1}
+\setkeys{person}{name={},position={},address={},phone={},barnumber={},%
+email={},inmateid={},fax={},sex={},race={},dateofbirth={},SSN={},DLN={},#2}%
+}
+
+\def\lead@lawyer{}
+\define@key{person}{leadlawyer}[]{%
+\xdef\lead@lawyer{\person@tag}
+\csdef{\person@tag @position}{\@leadlawyerposition}
+}
+
+\define@key{person}{trialleadlawyer}[]{%
+%\setkeys{trialstage}{leadlawyertag={\person@tag}}
+\csdef{\trialstage@tag @leadlawyertag}{\person@tag}
+\csdef{\person@tag @position}{\@leadlawyerposition}
+}
+
+\def\secondary@lawyer{}
+\define@key{person}{secondarylawyer}[]{%
+\xdef\secondary@lawyer{\person@tag}
+\csdef{\person@tag @position}{\@secondarylawyerposition}
+}
+
+\def\@appellant{}
+\def\@appellantposition{Appellant}
+\define@key{person}{appellant}[]{%
+\xdef\@appellant{\person@tag}
+\csdef{\person@tag @position}{\@appellantposition}
+}
+
+\def\@appellee{}
+\def\@appelleeposition{Appellee}
+\define@key{person}{appellee}[]{%
+\xdef\@appellee{\person@tag}
+\csdef{\person@tag @position}{\@appelleeposition}
+}
+
+\def\@trialdefencecounsel{}
+\def\@trialdefencecounselposition{Trial Defence Counsel}
+\define@key{person}{trialdefencecounsel}[]{%
+\xdef\@trialdefencecounsel{\person@tag}
+\csdef{\person@tag @position}{\@trialdefencecounselposition}
+}
+
+\def\@trialprosecutor{}
+\def\@trialprosecutor{Trial Prosecutor}
+\define@key{person}{trialprosecutor}[]{%
+\xdef\@trialprosecutor{\person@tag}
+\csdef{\person@tag @position}{\@trialprosecutorposition}
+}
+
+\def\@appealprosecutor{}
+\def\@appealprosecutor{Appellate Prosecutor}
+\define@key{person}{appealprosecutor}[]{%
+\xdef\@appealprosecutor{\person@tag}
+\csdef{\person@tag @position}{\@appealprosecutorposition}
+}
+
+\def\@judgepresiding{}
+\def\@judgepresidingposition{Judge Presiding}
+\define@key{person}{judgepresiding}[]{%
+\xdef\@judgepresiding{\person@tag}
+\csdef{\person@tag @position}{\@judgepresidingposition}
+}
+
+\def\@firstparty{}
+\define@key{person}{firstparty}[]{%
+\xdef\@firstparty{\person@tag}
+}
+
+\def\@secondparty{}
+\define@key{person}{secondparty}[]{%
+\xdef\@secondparty{\person@tag}
+}
+
+\def\@client{}
+\define@key{person}{client}[]{%
+\xdef\@client{\person@tag}
+}
+
+\newcommand\PrintClientName{\PrintPersonField{\@client}{name}\xspace}
+
+
+\newcommand\PrintPersonField[2]{%
+\csuse{#1@#2}%
+}
+
+\newcommand*\PrintPersonNameWithAddress[1]{%
+\noindent\PrintPersonField{#1}{name}%
+\edef\tmp@str{\csuse{#1@inmateid}}%
+\ifx\tmp@str\@empty\else,\space\#\nobreakspace\PrintPersonField{#1}{inmateid}\fi\\%
+\PrintPersonField{#1}{address}}
+
+\newcommand*\PrintFullPersonInfo[1]{%
+\PrintPersonField{#1}{name}%
+\edef\tmp@str{\csuse{#1@inmateid}}%
+\ifx\tmp@str\@empty\else,\space\#\nobreakspace\PrintPersonField{#1}{inmateid}\fi\par%
+{\itshape\PrintPersonField{#1}{position}}\par%
+\PrintPersonField{#1}{barnumber}\par%
+\PrintPersonField{#1}{address}\par%
+\PrintPersonField{#1}{phone}\par%
+\PrintPersonField{#1}{email}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Places definitions
+
+\define@key{place}{name}{\csdef{\court@tag @place@name}{#1}}
+\define@key{place}{address}{\csdef{\court@tag @place@address}{#1}}
+
+\newcommand\NewPlace[2]{%
+\def\court@tag{#1}
+\setkeys{place}{name={},address={\@empty},#2}
+}
+
+\newcommand\GetPlace[1]{%
+\csuse{#1@place@name}\par\csuse{#1@place@address}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Criminal case stage definitions
+
+% Trial stage
+
+\def\trialstage@tag{trialstage}
+
+\define@key{trialstage}{leadlawyertag}{\csdef{\trialstage@tag @leadlawyertag}{#1}}
+\define@key{trialstage}{secondarylawyertag}{\csdef{\trialstage@tag @secondarylawyertag}{#1}}
+\define@key{trialstage}{casenumber}{\csdef{\trialstage@tag @casenumber}{#1}}
+\define@key{trialstage}{prosecutingoffice}{\csdef{\trialstage@tag @prosecutingoffice}{#1}}
+\define@key{trialstage}{prosecutortag}{\csdef{\trialstage@tag @prosecutortag}{#1}}
+\define@key{trialstage}{courttag}{\csdef{\trialstage@tag @courttag}{#1}}
+\define@key{trialstage}{offensecharged}{\csdef{\trialstage@tag @offensecharged}{#1}}
+\define@key{trialstage}{dateofoffense}{\csdef{\trialstage@tag @dateofoffense}{#1}}
+\define@key{trialstage}{dateofarrest}{\csdef{\trialstage@tag @dateofarrest}{#1}}
+\define@key{trialstage}{countyofarrest}{\csdef{\trialstage@tag @countyofarrest}{#1}}
+\define@key{trialstage}{cityofarrest}{\csdef{\trialstage@tag @cityofarrest}{#1}}
+\define@key{trialstage}{arrestingagency}{\csdef{\trialstage@tag @arrestingagency}{#1}}
+\define@key{trialstage}{offensereportnumber}{\csdef{\trialstage@tag @offensereportnumber}{#1}}
+\define@key{trialstage}{casedisposition}{\csdef{\trialstage@tag @casedisposition}{#1}}
+\define@key{trialstage}{extrainfo}{\csdef{\trialstage@tag @extrainfo}{#1}}
+
+\newcommand\SetupTrialStageData[1]{%
+\setkeys{trialstage}{%
+leadlawyertag={},secondarylawyertag={},%
+casenumber={},prosecutingoffice={},%
+prosecutortag={},courttag={},%
+offensecharged={},dateofoffense={},
+dateofarrest={},countyofarrest={},%
+cityofarrest={},arrestingagency={},%
+offensereportnumber={},casedisposition={},
+extrainfo={},
+#1}
+}
+
+% Appellate stage
+
+\def\appellatestage@tag{aplstage}
+
+\define@key{aplstage}{leadlawyertag}{\csdef{\appellatestage@tag @leadlawyertag}{#1}}
+\define@key{aplstage}{secondarylawyertag}{\csdef{\appellatestage@tag @secondarylawyertag}{#1}}
+\define@key{aplstage}{casenumber}{\csdef{\appellatestage@tag @casenumber}{#1}}
+\define@key{aplstage}{prosecutingoffice}{\csdef{\appellatestage@tag @prosecutingoffice}{#1}}
+\define@key{aplstage}{prosecutortag}{\csdef{\appellatestage@tag @prosecutortag}{#1}}
+\define@key{aplstage}{courttag}{\csdef{\appellatestage@tag @courttag}{#1}}
+
+\newcommand\SetupAppellateStageData[1]{%
+\setkeys{aplstage}{%
+leadlawyertag={},secondarylawyertag={},%
+casenumber={},prosecutingoffice={},%
+prosecutortag={},courttag={},%
+#1}
+}
+
+% Collateral Attack
+
+\def\cattackstage@tag{cattack}
+
+\define@key{cattack}{casenumber}{\csdef{\cattackstage@tag @casenumber}{#1}}
+\define@key{cattack}{prosecutortag}{\csdef{\cattackstage@tag @prosecutortag}{#1}}
+\define@key{cattack}{prosecutingoffice}{\csdef{\cattackstage@tag @prosecutingoffice}{#1}}
+
+\newcommand\SetupCollateralAttackStageData[1]{%
+\setkeys{cattack}{%
+casenumber={},prosecutingoffice={},prosecutortag={},%
+#1}
+}
+
+% Expunction
+
+\def\expunctionstage@tag{expunction}
+
+\define@key{expunction}{casenumber}{\csdef{\expunctionstage@tag @casenumber}{#1}}
+\define@key{expunction}{courttag}{\csdef{\expunctionstage@tag @courttag}{#1}}
+
+\newcommand\SetupExpunctionStageData[1]{%
+\setkeys{expunction}{%
+casenumber={},courttag={},%
+#1}
+}
+
+% Pretrial Writ
+
+\def\pretrialwritstage@tag{pretrialwritstage}
+
+\define@key{pretrialwrit}{casenumber}{\csdef{\pretrialwritstage@tag @casenumber}{#1}}
+\define@key{pretrialwrit}{courttag}{\csdef{\pretrialwritstage@tag @courttag}{#1}}
+\define@key{pretrialwrit}{prosecutortag}{\csdef{\pretrialwritstage@tag @prosecutortag}{#1}}
+\define@key{pretrialwrit}{prosecutingoffice}{\csdef{\pretrialwritstage@tag @prosecutingoffice}{#1}}
+
+\newcommand\SetupPretrialWritStageData[1]{%
+\setkeys{pretrialwrit}{%
+casenumber={},prosecutingoffice={},%
+prosecutortag={},courttag={},%
+#1}
+}
+
+% Pretrial Writ Appeal
+
+\def\pretrialwritappealstage@tag{pretrialwritappealstage}
+
+\define@key{pretrialwritappeal}{casenumber}{\csdef{\pretrialwritappealstage@tag @casenumber}{#1}}
+\define@key{pretrialwritappeal}{courttag}{\csdef{\pretrialwritappealstage@tag @courttag}{#1}}
+\define@key{pretrialwritappeal}{prosecutortag}{\csdef{\pretrialwritappealstage@tag @prosecutortag}{#1}}
+\define@key{pretrialwritappeal}{prosecutingoffice}{\csdef{\pretrialwritappealstage@tag @prosecutingoffice}{#1}}
+
+\newcommand\SetupPretrialWritAppealStageData[1]{%
+\setkeys{pretrialwritappeal}{%
+casenumber={},prosecutingoffice={},%
+prosecutortag={},courttag={},%
+#1}
+}
+
+\def\sharpsym{\#}
+
+\endinput
