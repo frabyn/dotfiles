@@ -22,11 +22,14 @@ HIST_STAMPS="yyyy-mm-dd"
 # MacOS-specific configuation 
 {{ if eq .chezmoi.os "darwin" }}
 
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
 export HOMEBREW_NO_ENV_HINTS=true
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH=/opt/homebrew/Cellar/texlive/20240312_1/bin:$PATH
+
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+
 {{ end }}
 
 source $ZSH/oh-my-zsh.sh
