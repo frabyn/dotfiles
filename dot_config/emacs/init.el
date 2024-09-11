@@ -13,14 +13,12 @@
 ;; Set default font face
 (set-face-attribute 'default nil :font "BerkeleyMono Nerd Font" :height 180)
 
-;; Disable the menu bar
-(menu-bar-mode -1)
-
-;; Disable the tool bar
-(tool-bar-mode -1)
-
-;; Disable the scroll bars
-(scroll-bar-mode -1)
+;; Check for GUI and adjust accordingly
+(when (display-graphic-p)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (menu-bar-mode -1)
+  )
 
 ;; Disable splash screen
 (setq inhibit-startup-screen t)
