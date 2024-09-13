@@ -20,6 +20,12 @@
   (menu-bar-mode -1)
   )
 
+;; No backups. Emacs, meet modern file systems
+(make-backup-files -1)
+
+
+
+
 ;; Disable splash screen
 (setq inhibit-startup-screen t)
 
