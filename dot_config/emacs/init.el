@@ -13,27 +13,20 @@
 ;; Set default font face
 (set-face-attribute 'default nil :font "BerkeleyMono Nerd Font" :height 180)
 
-;; Check for GUI and adjust accordingly
-(when (display-graphic-p)
+;; Disable the menu bar
+(menu-bar-mode -1)
+
+;; Disable the tool bar
+(when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
-  (menu-bar-mode -1)
-  )
-
-;; No backups. Emacs, meet modern file systems
-(make-backup-files -1)
-
-
-
+  (set-fringe-mode 10))
 
 ;; Disable splash screen
 (setq inhibit-startup-screen t)
 
 ;; Visual bell to stop beeps
 (setq visible-bell t)
-
-;; Fringe for space
-(set-fringe-mode 10)
 
 ;; Bootstrap straight.el
 (defvar bootstrap-version)
