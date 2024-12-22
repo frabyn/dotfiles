@@ -38,7 +38,7 @@
 \def\presubparagraph{}
 \def\postsection{.}
 \def\postsubsection{}
-\def\postsubsubsection{}
+\def\postsubsubsection{.}
 \def\postparagraph{}
 \def\postsubparagraph{}
 
