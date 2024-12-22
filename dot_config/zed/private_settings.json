@@ -24,6 +24,9 @@
           }
         }
       ]
+    },
+    "HTML": {
+      // "format_on_save": "off"
     }
   },
   "lsp": {
@@ -39,6 +42,9 @@
       }
     }
   },
+  "features": {
+    "inline_completion_provider": "supermaven"
+  },
   "assistant": {
     "default_model": {
       "provider": "anthropic",
@@ -46,12 +52,17 @@
     },
     "version": "2"
   },
-  "ui_font_size": 16,
-  "buffer_font_family": "BerkeleyMono Nerd Font",
+  "cursor_blink": false,
+  "buffer_font_family": "SF Mono Powerline", // "BerkeleyMono Nerd Font",
   "buffer_font_size": 17,
+  "ui_font_family": "SF Pro Rounded",
   "theme": {
     "mode": "dark",
     "light": "One Light",
     "dark": "Zedokai Darker"
+  },
+  "terminal": {
+    "font_size": 14,
+    "shell": "system"
   }
 }
