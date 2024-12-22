@@ -10,7 +10,7 @@ fi
 
 export PATH=$HOME/.local/bin:$HOME/.cargo/bin:$PATH
 
-plugins=(git python)
+plugins=(git python zoxide)
 
 # Python plugin config
 export PYTHON_VENV_NAME=".venv"
@@ -50,15 +50,14 @@ else
 fi
 
 
-# Preferred editor for local and remote sessions
- if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vi'
- else
-   export EDITOR='vim'
- fi
+# Prefer bat pager when available
+if command -v bat >/dev/null 2>&1; then
+  export PAGER='bat'
+else
+  export PAGER='less'
+fi
 
-# bat is not available everywhere so this breaks things
-# export PAGER='bat'
+
 
 export SSH_AUTH_SOCK=~/.1password/agent.sock
 
