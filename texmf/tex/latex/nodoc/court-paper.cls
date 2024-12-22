@@ -92,7 +92,7 @@
 \def\subparagraph{\@startsection{subparagraph}{5}{0pt}{-0.1pt}{0.1pt}{\singlespacing\hyphenpenalty=10000\bfseries}}%
 
 \def\presection{}
-\def\presubsection{\textsc{Issue}\space}
+\def\presubsection{\textsc{Issue}} %\space} commented out space after issue for single issue brief
 \def\presubsubsection{}
 \def\preparagraph{}
 \def\presubparagraph{}
@@ -619,7 +619,7 @@ Court: \PrintCourtName{\csuse{trialstage@courttag}} %\PrintCourtPlace{\csuse{tri
 \def\printappealfrom{%
 \iftitle@appealfrom
 \smallrule\vfilnew
-On Appeal from the \PrintCourtName{\csuse{trialstage@courttag}}\\
+On Appeal from\\ \PrintCourtName{\csuse{trialstage@courttag}}\\
 \PrintCourtPlace{\csuse{trialstage@courttag}}\\
 Case Number \csuse{trialstage@casenumber}{}\else\fi%
 }
