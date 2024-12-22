@@ -1,2 +1,6 @@
+for secret_file in ~/.config/secrets/*.env; do
+    [ -f "$secret_file" ] && source "$secret_file"
+done
+
 ZDOTDIR=$HOME/.config/zsh
 
