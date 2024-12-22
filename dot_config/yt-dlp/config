@@ -1,2 +1,8 @@
 # Save all videos under YouTube directory in home directory
 -o ~/Videos/YouTube/%(title)s.%(ext)s
+# Download the best mp4 video available, or the best video if no mp4 available
+-f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
+
+
+
+
