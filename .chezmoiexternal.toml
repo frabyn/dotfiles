@@ -17,3 +17,10 @@ url = "https://github.com/romkatv/powerlevel10k.git"
 exact = true
 stripComponents = 1
 refreshPeriod = "168h"
+
+[".config/zsh/custom/plugins/zsh-autosuggestions"]
+type = "git-repo"
+url = "https://github.com/zsh-users/zsh-autosuggestions"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
