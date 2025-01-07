@@ -87,7 +87,7 @@ if platform.is_win then
 		},
 	}
 elseif platform.is_mac then
-	config.default_prog = { "/opt/homebrew/bin/fish", "-l" }
+	config.default_prog = { "zsh", "-l" }
 	config.launch_menu = {
 		{ label = "Bash", args = { "bash", "-l" } },
 		{ label = "Fish", args = { "/opt/homebrew/bin/fish", "-l" } },
