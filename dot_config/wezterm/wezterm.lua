@@ -94,7 +94,8 @@ elseif platform.is_mac then
 		-- { label = 'Nushell', args = { '/opt/homebrew/bin/nu', '-l' } },
 		{ label = "Zsh", args = { "zsh", "-l" } },
 	}
-	local mac_font = wezterm.font("SF Mono Powerline", { weight = "Light" })
+  -- local mac_font = wezterm.font("SF Mono Powerline", { weight = "Light" })
+	local mac_font = wezterm.font("Berkeley Mono", { weight = "Regular" })
 	config.font = mac_font
 	config.font_size = 18
 	config.initial_rows = 40
