@@ -2,8 +2,7 @@ for secret_file in ~/.config/secrets/*.env; do
     [ -f "$secret_file" ] && source "$secret_file"
 done
 
-HOMEBREW_NO_ENV_HINTS=True
-ZSH_DISABLE_COMPFIX=True
+HOMEBREW_NO_ENV_HINTS=true
 
 ZDOTDIR=$HOME/.config/zsh
 
