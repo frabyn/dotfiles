@@ -41,6 +41,8 @@ FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
 {{ end }}
 
+export ZSH_DISABLE_COMPFIX=true
+
 source $ZSH/oh-my-zsh.sh
 
 # Check for nvim and set as editor if available
