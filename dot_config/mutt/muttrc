@@ -10,7 +10,7 @@ set postponed = "+Drafts"
 
 # currently this is config for neomutt, need to replace
 # source ~/.config/mutt/colors-monokai.muttrc 
-source ~/.config/mutt/color-xyz.muttrc
+source ~/.config/mutt/colors-solarized-256.muttrc
 
 set realname = "Franklin Bynum"
 set from = "franklin@bynumlaw.net"
