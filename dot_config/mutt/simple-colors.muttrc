@@ -1,0 +1,51 @@
+# Colors - Utilizing Terminal Colors
+# General UI Colors
+color normal     default default          # Default text color
+color error      color1  default          # Error messages
+color tilde      color8  default          # Pager ~
+color markers    color2  default          # Pager + marks
+color attachment color6  default          # Attachments
+color search     default color10          # Search highlights
+color status     color15 color8           # Status bar
+color indicator  color15 color4           # Current selection
+color tree       color2  default          # Thread tree
+
+# Message Index Colors
+color index      color7  default "~A"     # All messages default
+color index      color2  default "~N"     # New messages
+color index      color6  default "~O"     # Old messages
+color index      color4  default "~Q"     # Messages that have been replied to
+color index      color3  default "~F"     # Flagged messages
+color index      color1  default "~D"     # Deleted messages
+color index      color5  default "~T"     # Tagged messages
+
+# Message Header Colors
+color hdrdefault color6  default
+color header     color4  default "^(From):"
+color header     color5  default "^(Subject):"
+color header     color2  default "^(To|Cc|Bcc):"
+color header     color3  default "^(Date):"
+
+# Message Body Colors
+color quoted     color6  default
+color quoted1    color3  default
+color quoted2    color5  default
+color quoted3    color2  default
+color quoted4    color4  default
+color signature  color8  default
+color bold       color15 default
+color underline  color15 default
+
+# URL and Email Patterns
+color body       color4  default "(https?|ftp)://[^ >\"\t\r\n]*"
+color body       color4  default "[-a-z_0-9.+]+@[-a-z_0-9.]+"
+
+# GPG Security Colors
+color body       color2  default "^gpg: Good signature from"
+color body       color1  default "^gpg: BAD signature from"
+color body       color3  default "^gpg: Can't check signature"
+
+# Sidebar Colors (common in both mutt and neomutt)
+color sidebar_new       color2  default
+color sidebar_flagged   color3  default
+

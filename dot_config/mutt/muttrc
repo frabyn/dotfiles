@@ -1,7 +1,7 @@
 # IMAP: offlineimap
 set mbox_type = Maildir
-set folder = "~/Maildir"
-source ~/.local/share/mutt/mailboxes
+set folder = "~/.local/share/maildir/"
+source ~/.local/state/mutt/mailboxes
 set spoolfile = "+INBOX"
 set record = "+Sent"
 set postponed = "+Drafts"
@@ -10,14 +10,14 @@ set postponed = "+Drafts"
 
 # currently this is config for neomutt, need to replace
 # source ~/.config/mutt/colors-monokai.muttrc 
-source ~/.config/mutt/dracula.muttrc
+source ~/.config/mutt/simple-colors.muttrc
 
 set realname = "Franklin Bynum"
 set from = "franklin@bynumlaw.net"
 
 alternative_order multipart/mixed multipart/related text/plain text/html
 
-set mailcap_path = ~/.mutt/mailcap
+set mailcap_path = ~/.config/mutt/mailcap
 
 auto_view text/html
 
@@ -57,7 +57,7 @@ macro index R "<save-message>=Receipts<Enter><Enter>"
 
 set change_folder_next = yes
 
-set query_command = "khard email --parsable %s"
+set query_command = "khard email --parsable --search-in-source-files %s"
 bind editor <Tab> complete-query
 bind editor ^T    complete
 

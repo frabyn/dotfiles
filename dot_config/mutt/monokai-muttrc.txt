@@ -1,0 +1,87 @@
+# Monokai Pro-inspired color scheme for Mutt
+# Base colors from Monokai Pro
+# Background: #2d2a2e
+# Foreground: #fcfcfa
+# Yellow: #ffd866
+# Orange: #fc9867
+# Red: #ff6188
+# Purple: #ab9df2
+# Blue: #78dce8
+# Green: #a9dc76
+
+# Basic Colors
+color normal        color252    default
+color error         color203    default
+color tilde         color241    default
+color message       color252    default
+color markers       color203    default
+color attachment    color117    default
+color search        color218    default
+color status        color237    color250
+color indicator     color234    color148
+
+# Index Colors - Livened up with more Monokai Pro colors
+color index         color252    default    "~A"     # All messages (base)
+color index         color203    default    "~F"     # Flagged messages (red)
+# color index_flagged color203    default          # Flag markers
+color index         color117    default    "~N"     # New messages (blue)
+color index         color245    default    "~O"     # Old messages (grey)
+color index         color240    default    "~D"     # Deleted messages (dark grey)
+color index         color222    default    "~f ."   # Author
+color index         color244    default    "~s ."   # Subject
+
+# Highlighted/selected line - bright blue background
+color indicator     color234    color78     # Monokai blue-green (78dce8)
+
+# Messages addressed specifically to me - green
+color index         color156    default    "~p"     # Messages addressed to me (bright green)
+
+# Special highlighting for important messages
+color index         color222    default    "~P"     # Messages from me (yellow)
+color index         color214    default    "~U"     # Unread messages (orange)
+color index         color203    default    "~v~(~F)"   # Collapsed thread with flagged (red)
+color index         color222    color237   "~T"     # Tagged messages (highlighted)
+
+# Header Colors
+color hdrdefault    color245    default
+color header        color222    default    "^(From)"
+color header        color117    default    "^(Subject)"
+color header        color142    default    "^(To)"
+color header        color203    default    "^(CC|BCC)"
+color header        color222    default    "^(Date)"
+
+# Body Colors
+color quoted        color142    default
+color quoted1       color117    default
+color quoted2       color222    default
+color quoted3       color203    default
+color quoted4       color245    default
+
+color signature     color245    default
+color bold          color235    default
+color underline     color235    default
+
+# URL highlighting
+color body          color117    default    "(^|<| )mailto:[^ ]+@[^ ]( |>|$)"
+color body          color117    default    "(^|<| )(http|https|ftp|file|telnet|news|finger)://[^ ]+( |>|$)"
+
+# Email highlighting
+color body          color117    default    "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+
+# Misc Colors
+# color progress      color235    color203
+color tree          color222    default    # arrow in threads - brighter yellow
+color sidebar_new   color117    default
+
+# Adding visual separation with status line 
+color status        color234    color148   # Status line - green background
+
+# Date coloring (helps with visual scanning)
+color index         color250    default    "~d <1d"     # Today
+color index         color117    default    "~d <2d ~d >1d"   # Yesterday
+color index         color245    default    "~d <7d ~d >2d"   # This week
+
+# Additional indicators for attachments and threads
+color index         color214    default    "~h \"^Subject: .*\\[.*\\]\"" # Bracketed subjects
+color index         color142    default    "~h \"(^\s*Cc:|^\s*To:).*\"" # Messages with Cc: field
+# color index_attach  color117    default    "~h \"^Content-Type: \""     # Messages with attachments
