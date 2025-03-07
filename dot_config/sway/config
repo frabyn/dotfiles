@@ -21,12 +21,12 @@ set $term ghostty
 set $menu "rofi -theme Monokai -show drun"
 #set $menu "rofi -show drun"
 
-font pango:BlexMono Nerd Font 12
+font pango:BerkeleyMono Nerd Font 12
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-#output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png
+# output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png
 #
 # Example configuration:
 #
@@ -208,10 +208,11 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # 10-pixel border around every window
-gaps inner 10
+gaps inner 2
+gaps outer 2
 
 # Remove title bar
-default_border pixel 1
+default_border pixel 2 
 
 # Brightness using light
 # Requires passwordless sudo for light
