@@ -1,48 +1,26 @@
-// # vi: ft=json
-// =============================================================================
-//
-// Waybar configuration
-//
-// Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
-//
-// =============================================================================
-
 {
-    // -------------------------------------------------------------------------
-    // Global configuration
-    // -------------------------------------------------------------------------
 
     "layer": "top",
-
     "position": "top",
-
-    // If height property would be not present, it'd be calculated dynamically
     "height": 20,
 
     "modules-left": [
         "clock#date",
         "clock#time",
         "sway/workspaces",
-        "sway/mode",
-        
-    ],
+        "sway/mode"
+],
     "modules-center": [
         "sway/window"
     ],
     "modules-right": [
         "network",
         "memory",
-//        "cpu",
         "temperature",
         "battery",
+        "wireplumber",
         "tray"
-//        "pulseaudio"
     ],
-
-
-    // -------------------------------------------------------------------------
-    // Modules
-    // -------------------------------------------------------------------------
 
     "battery": {
         "interval": 10,
@@ -50,16 +28,14 @@
             "warning": 30,
             "critical": 15
         },
-        // Connected to AC
-        "format": " {icon}  {capacity}%", // Icon: bolt
-        // Not connected to AC
-        "format-discharging": "{icon}  {capacity}%",
+        "format": " {capacity}%",
+        "format-discharging": "{icon} {capacity}%",
         "format-icons": [
-            "", // Icon: battery-full
-            "", // Icon: battery-three-quarters
-            "", // Icon: battery-half
-            "", // Icon: battery-quarter
-            ""  // Icon: battery-empty
+            "󰁺",  // Battery empty
+            "󰁼", // Battery quarter
+            "󰁾", // Battery half
+            "󰂀", // Battery three-quarters
+            "󰁹" // Battery full
         ],
         "tooltip": true
     },
@@ -72,13 +48,13 @@
 
     "clock#date": {
       "interval": 10,
-      "format": "{:%e %b}", // Icon: calendar-alt
+      "format": "󰸗 {:%e %b}", // Icon: calendar-alt
       "tooltip-format": "{:%e %B %Y}"
     },
 
     "cpu": {
         "interval": 5,
-        "format": "  {usage}% ({load})", // Icon: microchip
+        "format": "󰘚 {usage}% ({load})", // Icon: microchip
         "states": {
           "warning": 70,
           "critical": 90
@@ -87,17 +63,15 @@
 
     "custom/keyboard-layout": {
       "exec": "swaymsg -t get_inputs | grep -m1 'xkb_active_layout_name' | cut -d '\"' -f4",
-      // Interval set only as a fallback, as the value is updated by signal
       "interval": 30,
-      "format": "  {}", // Icon: keyboard
-      // Signal sent by Sway key binding (~/.config/sway/key-bindings)
-      "signal": 1, // SIGHUP
+      "format": "󰌌 {}", // Icon: keyboard
+      "signal": 1,
       "tooltip": false
     },
 
     "memory": {
         "interval": 5,
-        "format": " {}%", // Icon: memory
+        "format": "󰍛 {}% ", // Icon: memory
         "states": {
             "warning": 70,
             "critical": 90
@@ -106,14 +80,14 @@
 
     "network": {
         "interval": 5,
-        "format-wifi": "  ", // Icon: wifi
-        "format-ethernet": "", // Icon: ethernet
-        "format-disconnected": "",
-        "tooltip-format": "{ifname}: {ipaddr}"
+        "format-wifi": "󰖩 ", // Icon: wifi
+        "format-ethernet": "󰈀", // Icon: ethernet
+        "format-disconnected": "󰖪",
+        "tooltip-format": "{ifname}: {essid}"
     },
 
     "sway/mode": {
-        "format": "<span style=\"italic\">  {}</span>", // Icon: expand-arrows-alt
+        "format": "<span style=\"italic\">󰩨 {}</span>", // Icon: expand-arrows-alt
         "tooltip": false
     },
 
@@ -125,46 +99,29 @@
     "sway/workspaces": {
         "all-outputs": false,
         "disable-scroll": true,
-        "format": "{index}{name}",
+        "format": "{index}",
         "format-icons": {
-            "1:www": "龜", // Icon: firefox-browser
-            "2:mail": "", // Icon: mail
-            "3:editor": "", // Icon: code
-            "4:terminals": "", // Icon: terminal
-            "5:portal": "", // Icon: terminal
-            "urgent": "",
-            "focused": "",
-            "default": ""
+            "1:www": "󰈹", // Firefox browser
+            "2:mail": "󰇮", // Mail
+            "3:editor": "󰈭", // Code
+            "4:terminals": "󰆍", // Terminal
+            "5:portal": "󰀲", // Terminal alternative
+            "urgent": "󰀦",
+            "focused": "󰪥",
+            "default": "󰝦"
         }
     },
-
-    //"pulseaudio": {
-    //    //"scroll-step": 1,
-    //    "format": "{icon}  {volume}%",
-    //    "format-bluetooth": "{icon}  {volume}%",
-    //    "format-muted": "",
-    //    "format-icons": {
-    //        "headphones": "",
-    //        "handsfree": "",
-    //        "headset": "",
-    //        "phone": "",
-    //        "portable": "",
-    //        "car": "",
-    //        "default": ["", ""]
-    //    },
-    //    "on-click": "pavucontrol"
-    //},
 
     "temperature": {
       "critical-threshold": 80,
       "interval": 5,
-      "format": "{icon} {temperatureC}°C ",
+      "format": "{temperatureC}°C ",
       "format-icons": [
-          "", // Icon: temperature-empty
-          "", // Icon: temperature-quarter
-          "", // Icon: temperature-half
-          "", // Icon: temperature-three-quarters
-          ""  // Icon: temperature-full
+          "󱃃", // Temperature empty
+          "󱃃", // Temperature quarter
+          "󱃃", // Temperature half
+          "󱃃", // Temperature three-quarters
+          "󱃂"  // Temperature full
       ],
       "tooltip": true
     },
@@ -173,7 +130,13 @@
         "icon-size": 12,
         "spacing": 10,
         "show-passive-items": true
-    }
+    },
 
+"wireplumber": {
+    "format": " {icon}",
+    "format-muted": " 󰸈",
+    "on-click": "helvum",
+    "format-icons": ["", "", ""]
 }
 
+}
