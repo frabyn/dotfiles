@@ -1,0 +1,13 @@
+font-family = Berkeley Mono
+font-synthetic-style = false
+font-size = 18
+font-thicken = true
+theme = Monokai Classic
+shell-integration-features = no-cursor
+cursor-style = underline
+cursor-style-blink = false
+cursor-click-to-move = true
+background-opacity = .8
+window-theme = system
+window-height = 45
+window-width = 125
