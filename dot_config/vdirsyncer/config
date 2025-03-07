@@ -1,0 +1,39 @@
+[general]
+# XDG paths
+status_path = "~/.local/state/vdirsyncer/status/"
+
+# Discover collections (calendars/address books) automatically
+[storage fastmail_calendar]
+type = "caldav"
+url = "https://caldav.fastmail.com/dav/"
+username = "franklin@bynumlaw.net"
+password.fetch = ["command", "secret-tool", "lookup", "service", "fastmail-dav"]
+
+[storage local_calendar]
+type = "filesystem"
+path = "~/.local/share/calendars/"
+fileext = ".ics"
+
+[pair fastmail_calendar_sync]
+a = "fastmail_calendar"
+b = "local_calendar"
+collections = ["from a", "from b"]
+metadata = ["color", "displayname"]
+
+# Address books configuration
+[storage fastmail_contacts]
+type = "carddav"
+url = "https://carddav.fastmail.com/dav/"
+username = "franklin@bynumlaw.net"
+password.fetch = ["command", "secret-tool", "lookup", "service", "fastmail-dav"]
+
+[storage local_contacts]
+type = "filesystem"
+path = "~/.local/share/contacts/"
+fileext = ".vcf"
+
+[pair fastmail_contacts_sync]
+a = "fastmail_contacts"
+b = "local_contacts"
+collections = ["from a", "from b"]
+conflict_resolution = "b wins"
