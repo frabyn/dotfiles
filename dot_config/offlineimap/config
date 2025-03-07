@@ -2,9 +2,9 @@
 
 accounts = Fastmail
 
-metadata = ~/.local/share/offlineimap
+metadata = ~/.local/state/offlineimap
 
-pythonfile = ~/.config/offlineimap/offlineimap.py
+pythonfile = ~/.local/bin/offlineimap-helper.py
 
 [Account Fastmail]
 localrepository = FastmailLocal
@@ -14,7 +14,7 @@ remoterepository = FastmailRemote
 
 type = Maildir
 
-localfolders = ~/Maildir
+localfolders = ~/.local/share/maildir
 
 [Repository FastmailRemote]
 type = IMAP
@@ -33,10 +33,10 @@ remotepasseval = get_pass("Fastmail")
 
 [mbnames]
 enabled = yes
-filename = ~/.local/share/mutt/mailboxes
+filename = ~/.local/state/mutt/mailboxes
 header = "mailboxes "
 peritem = +%(foldername)s
 sep = " "
 footer = "\n"
 maxsyncaccounts = 1
-maxconnections = 1
+maxconnections = 10
