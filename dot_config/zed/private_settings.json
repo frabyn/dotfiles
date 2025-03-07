@@ -43,23 +43,23 @@
     }
   },
   "features": {
-    "inline_completion_provider": "supermaven"
+    "edit_prediction_provider": "zed"
   },
   "assistant": {
     "default_model": {
-      "provider": "anthropic",
+      "provider": "zed.dev",
       "model": "claude-3-5-sonnet-latest"
     },
     "version": "2"
   },
   "cursor_blink": false,
-  "buffer_font_family": "SF Mono Powerline", // "BerkeleyMono Nerd Font",
+  "buffer_font_family": "BerkeleyMono Nerd Font",
   "buffer_font_size": 17,
-  "ui_font_family": "SF Pro Rounded",
+  "ui_font_family": "BerkeleyMono Nerd Font",
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Zedokai Darker"
+    "dark": "One Dark"
   },
   "terminal": {
     "font_size": 14,
