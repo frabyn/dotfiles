@@ -14,16 +14,19 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term wezterm 
+set $term ghostty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 set $menu "rofi -theme Monokai -show drun"
+#set $menu "rofi -show drun"
+
+font pango:BlexMono Nerd Font 12
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png
+#output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png
 #
 # Example configuration:
 #
@@ -35,11 +38,11 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png
 #
 # Example configuration:
 #
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-#          before-sleep 'swaylock -f -c 000000'
-#
+exec swayidle -w \
+          timeout 300 'swaylock -f -c 000000' \
+          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+          before-sleep 'swaylock -f -c 000000'
+
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
@@ -127,7 +130,9 @@ input type:touchpad {
     bindsym $mod+8 workspace number 8
     bindsym $mod+9 workspace number 9
     bindsym $mod+0 workspace number 10
-    # Move focused container to workspace
+    bindsym $mod+z workspace Z
+
+# Move focused container to workspace
     bindsym $mod+Shift+1 move container to workspace number 1
     bindsym $mod+Shift+2 move container to workspace number 2
     bindsym $mod+Shift+3 move container to workspace number 3
@@ -211,8 +216,14 @@ default_border pixel 1
 # Brightness using light
 # Requires passwordless sudo for light
 
-bindsym XF86MonBrightnessUp exec sudo light -A 10
-bindsym XF86MonBrightnessDown exec sudo light -U 10
+bindsym XF86MonBrightnessUp exec brightnessctl s +5%
+bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
+
+bindsym XF86AudioRaiseVolume exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+
 
 
 #
@@ -220,12 +231,13 @@ bindsym XF86MonBrightnessDown exec sudo light -U 10
 #
 # Read `man 5 sway-bar` for more information about this section.
 
-bar { 
+bar {
     swaybar_command waybar
     }
 
 for_window [class="1Password"] floating enable
 for_window [app_id="Nautilus"] floating enable resize down 10ppt up 10ppt
 
-exec sworkstyle &> /tmp/sworkstyle.log
+
+# exec sworkstyle &> /tmp/sworkstyle.log
 include /etc/sway/config.d/*
