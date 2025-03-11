@@ -236,6 +236,8 @@ bar {
     swaybar_command waybar
     }
 
+exec mako
+
 for_window [class="1Password"] floating enable
 for_window [app_id="Nautilus"] floating enable resize down 10ppt up 10ppt
 
