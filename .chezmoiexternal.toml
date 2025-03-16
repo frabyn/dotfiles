@@ -24,3 +24,10 @@ url = "https://github.com/zsh-users/zsh-autosuggestions"
 exact = true
 stripComponents = 1
 refreshPeriod = "168h"
+
+[".config/ranger/plugins/ranger-devicons"]
+type = "git-repo"
+url = "https://github.com/alexanderjeurissen/ranger_devicons"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
