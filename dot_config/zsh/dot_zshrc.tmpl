@@ -61,9 +61,10 @@ else
   export PAGER='less'
 fi
 
-if command -v eza >/dev/null 2>&1; then
-  alias ls = eza
-fi
+alias l='eza --color=always --color-scale=all --color-scale-mode=gradient --icons=always --group-directories-first'
+alias ll='eza --color=always --color-scale=all --color-scale-mode=gradient --icons=always --group-directories-first -l --git -h'
+alias la='eza --color=always --color-scale=all --color-scale-mode=gradient --icons=always --group-directories-first -a'
+alias lla='eza --color=always --color-scale=all --color-scale-mode=gradient --icons=always --group-directories-first -a -l --git -h'
 
 export SSH_AUTH_SOCK=~/.1password/agent.sock
 
