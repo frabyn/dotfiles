@@ -61,7 +61,9 @@ else
   export PAGER='less'
 fi
 
-
+if command -v eza >/dev/null 2>&1; then
+  alias ls = eza
+fi
 
 export SSH_AUTH_SOCK=~/.1password/agent.sock
 
