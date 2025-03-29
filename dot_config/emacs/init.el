@@ -321,7 +321,8 @@
   (chatgpt-shell-anthropic-key (getenv "ANTHROPIC_API_KEY"))
   )
 
-
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Miscellaneous
