@@ -5,13 +5,11 @@
     "height": 20,
 
     "modules-left": [
-        "clock#date",
-        "clock#time",
         "sway/workspaces",
         "sway/mode"
 ],
     "modules-center": [
-        "sway/window"
+
     ],
     "modules-right": [
         "network",
@@ -19,7 +17,10 @@
         "temperature",
         "battery",
         "wireplumber",
-        "tray"
+        "tray",
+        "clock#date",
+        "clock#time",
+
     ],
 
     "battery": {
@@ -97,9 +98,9 @@
     },
 
     "sway/workspaces": {
-        "all-outputs": false,
+        "all-outputs": true,
         "disable-scroll": true,
-        "format": "{index}",
+        "format": "{index}: {name}",
         "format-icons": {
             "1:www": "󰈹", // Firefox browser
             "2:mail": "󰇮", // Mail
@@ -133,10 +134,20 @@
     },
 
 "wireplumber": {
-    "format": " {icon}",
-    "format-muted": " 󰸈",
+    "format": "{icon}",
+    "format-muted": "",
     "on-click": "helvum",
     "format-icons": ["", "", ""]
-}
+},
+
+	"systemd-failed-units": {
+		"hide-on-ok": true,
+		"format": "✗ {nr_failed}",
+		"format-alt": "{nr_failed} failed systemd unit(s)",
+		"format-ok": "✓",
+		"system": true, 		
+		"user": true
+	},
+
 
 }

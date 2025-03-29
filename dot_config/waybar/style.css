@@ -22,7 +22,7 @@ window#waybar {
 .modules-center {
   background-color: @base00;
   border: 3px solid rgba(0, 0, 0, 0);
-  border-radius: 20px;
+  border-radius: 10px;
   background-clip: padding-box;
 }
 
@@ -41,8 +41,16 @@ window#waybar.hidden {
 
 /* Each module */
 
+#clock {
+    padding-left: 8px;
+}
+
+#wireplumber {
+    padding-right: 4px;
+    margin-right: 4px;
+}
+
 #battery,
-#clock,
 #custom-media,
 #custom-spotify,
 #memory,
@@ -50,8 +58,9 @@ window#waybar.hidden {
 #bluetooth,
 #backlight,
 #network,
-#pulseaudio,
+#wireplumber,
 #window,
+#systemd-failed-units,
 #tray {
   padding-left: 4px;
   padding-right: 4px;

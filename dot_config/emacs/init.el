@@ -6,12 +6,15 @@
 
 ;; -*- lexical-binding: t -*-
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Basic UI Configuration
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Size initial frame
 (add-to-list 'default-frame-alist '(height . 30))
 (add-to-list 'default-frame-alist '(width . 100))
 
 ;; Set default font face
-(set-face-attribute 'default nil :font "BerkeleyMono Nerd Font" :height 180)
+(set-face-attribute 'default nil :font "BerkeleyMono Nerd Font" :height 160)
 
 ;; Disable the menu bar
 (menu-bar-mode -1)
@@ -28,6 +31,9 @@
 ;; Visual bell to stop beeps
 (setq visible-bell t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Package Management
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Bootstrap straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -48,7 +54,10 @@
 ;; Use straight.el by default with use-package
 (setq straight-use-package-by-default t)
 
-;; Install and use my fave theme
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Theme & Visual Enhancements
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package monokai-theme)
 
 (load-theme 'monokai t)
@@ -62,9 +71,33 @@
 ;; Enable line numbering in `prog-mode'
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; General Editing Configuration
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Automatically pair parentheses
 (electric-pair-mode t)
 
+;; Display messages when idle, without prompting
+(setq help-at-pt-display-when-idle t)
+
+;; Miscellaneous options
+(setq-default major-mode
+              (lambda () ; guess major mode from file name
+                (unless buffer-file-name
+                  (let ((buffer-file-name (buffer-name)))
+                    (set-auto-mode)))))
+
+;(setq confirm-kill-emacs #'yes-or-no-p)
+(setq window-resize-pixelwise t)
+(setq frame-resize-pixelwise t)
+(save-place-mode t)
+(savehist-mode t)
+(recentf-mode t)
+(defalias 'yes-or-no #'y-or-n-p)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Helper Interfaces & Completion
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
@@ -94,6 +127,22 @@
   :init
   (marginalia-mode))
 
+;; Configure directory extension.
+(use-package vertico-directory
+  :straight nil
+  :after vertico
+  :ensure nil
+  ;; More convenient directory navigation commands
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  ;; Tidy shadowed file names
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Git Integration
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
@@ -101,9 +150,41 @@
 ;; Bind the `magit-status' command to a convenient key.
 (global-set-key (kbd "C-c g") #'magit-status)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Development Environment
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Enabled inline static analysis
 (add-hook 'prog-mode-hook #'flymake-mode)
 
+;; LSP Config
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode))
+
+;; Autocompletion
+(use-package company
+  :after lsp-mode
+  :hook (prog-mode . company-mode)
+  :bind (:map company-active-map
+         ("<tab>" . company-complete-selection))
+        (:map lsp-mode-map
+         ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
+
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; File Explorer
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Treemacs
 (use-package treemacs
   :ensure t
@@ -203,15 +284,18 @@
   :after (treemacs magit)
   :ensure t)
 
-;; LSP Config
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+(use-package lsp-treemacs
+  :after lsp)
+
+(use-package treemacs-nerd-icons
+  :after treemacs
   :config
-  (lsp-enable-which-key-integration t))
+  (treemacs-load-theme "nerd-icons"))
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Language-Specific Configuration
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Python
 (use-package lsp-pyright
   :ensure t
   :hook (python-mode . (lambda ()
@@ -222,56 +306,34 @@
   :after python
   :hook (python-mode . python-black-on-save-mode-enable-dwim))
 
-(use-package lsp-treemacs
-  :after lsp)
-
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode))
-
-(use-package company
-  :after lsp-mode
-  :hook (prog-mode . company-mode)
-  :bind (:map company-active-map
-         ("<tab>" . company-complete-selection))
-        (:map lsp-mode-map
-         ("<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
-
-(use-package company-box
-  :hook (company-mode . company-box-mode))
-
-;; Display messages when idle, without prompting
-(setq help-at-pt-display-when-idle t)
-
-;;; YAML Support
+;; YAML Support
 (use-package yaml-mode)
 
-;;; Markdown support
+;; Markdown support
 (use-package markdown-mode)
 
-;; Miscellaneous options
-(setq-default major-mode
-              (lambda () ; guess major mode from file name
-                (unless buffer-file-name
-                  (let ((buffer-file-name (buffer-name)))
-                    (set-auto-mode)))))
+(use-package shell-maker
+  :straight (:type git :host github :repo "xenodium/shell-maker" :files ("shell-maker*.el")))
 
-;(setq confirm-kill-emacs #'yes-or-no-p)
-(setq window-resize-pixelwise t)
-(setq frame-resize-pixelwise t)
-(save-place-mode t)
-(savehist-mode t)
-(recentf-mode t)
-(defalias 'yes-or-no #'y-or-n-p)
+(use-package chatgpt-shell
+  :straight (:type git :host github :repo "xenodium/chatgpt-shell" :files ("chatgpt-shell*.el"))
+  :custom
+  (chatgpt-shell-anthropic-key (getenv "ANTHROPIC_API_KEY"))
+  )
 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Miscellaneous
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Store automatic customisation options elsewhere
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (when (file-exists-p custom-file)
   (load custom-file))
 
 (setq warning-minimum-level :error)
+
+(setq make-backup-files nil) ; stop creating ~ files
 
 (provide 'init)
 ;;; init.el ends here
