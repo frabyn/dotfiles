@@ -142,9 +142,9 @@ bindsym $mod+5 workspace number 5
 bindsym $mod+6 workspace number 6
 
 # Move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace number 1
-bindsym $mod+Shift+2 move container to workspace number 2
-bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+1 move container to workspace "1:emacs"
+bindsym $mod+Shift+2 move container to workspace "2:main"
+bindsym $mod+Shift+3 move container to workspace "3:term"
 bindsym $mod+Shift+4 move container to workspace number 4
 bindsym $mod+Shift+5 move container to workspace number 5
 bindsym $mod+Shift+6 move container to workspace number 6
@@ -245,6 +245,7 @@ swaybar_command waybar
 
 exec mako
 
+for_window [app_id="emacs"] border none
 for_window [class="1Password"] floating enable
 for_window [app_id="Nautilus"] floating enable resize down 10ppt up 10ppt
 

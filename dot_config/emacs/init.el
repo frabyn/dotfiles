@@ -9,6 +9,39 @@
 
 ;;; Code:
 
+;;;; Package Management
+
+;; Bootstrap straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+;; Use straight.el for use-package expressions
+(straight-use-package 'use-package)
+
+;; Use straight.el by default with use-package
+(setq straight-use-package-by-default t)
+
+;;;; Performance
+
+;; Set a reasonable GC threshold for ongoing operation
+(setq gc-cons-threshold (* 16 1000 1000))
+
+;; Add periodic garbage collection during idle time
+(use-package gcmh
+  :demand t
+  :config
+  (gcmh-mode 1))
+
 ;;;; Basic UI Configuration
 
 ;; Size initial frame
@@ -33,33 +66,13 @@
 ;; Visual bell to stop beeps
 (setq visible-bell t)
 
+;; Window and frame handling
+(setq window-resize-pixelwise t)
+(setq frame-resize-pixelwise t)
 
-;;;; Package Management
-
-;; Bootstrap straight.el
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-;; Use straight.el for use-package expressions
-(straight-use-package 'use-package)
-
-;; Use straight.el by default with use-package
-(setq straight-use-package-by-default t)
-
-;; Theme & Visual Enhancements
+;;;; Theme & Visual Enhancements
 
 (use-package monokai-theme)
-
 (load-theme 'monokai t)
 
 (use-package doom-modeline
@@ -70,7 +83,6 @@
 
 ;; Enable line numbering in `prog-mode'
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-
 
 ;;;; General Editing Configuration
 
@@ -86,27 +98,20 @@
                 (unless buffer-file-name
                   (let ((buffer-file-name (buffer-name)))
                     (set-auto-mode)))))
-(setq window-resize-pixelwise t)
-(setq frame-resize-pixelwise t)
+
+;; Enable history and recent files
 (save-place-mode 1)
 (savehist-mode 1)
 (recentf-mode 1)
+
+;; Simplify yes/no prompts
 (defalias 'yes-or-no-p #'y-or-n-p)
 
-;; Miscellaneous options
-(setq-default major-mode
-              (lambda () ; guess major mode from file name
-                (unless buffer-file-name
-                  (let ((buffer-file-name (buffer-name)))
-                    (set-auto-mode)))))
+;; Sentence formatting
+(setq sentence-end-double-space nil) ; you monsters
 
-(setq window-resize-pixelwise t)
-(setq frame-resize-pixelwise t)
-(save-place-mode 1)
-(savehist-mode 1)
-(recentf-mode 1)
-(defalias 'yes-or-no #'y-or-n-p)
-
+;; Backups
+(setq make-backup-files nil) ; stop creating ~ files
 
 ;;;; Helper Interfaces & Completion
 
@@ -152,7 +157,6 @@
   ;; Tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
-
 ;;;; Git Integration
 
 (use-package magit
@@ -162,38 +166,89 @@
 ;; Bind the `magit-status' command to a convenient key.
 (global-set-key (kbd "C-c g") #'magit-status)
 
-
 ;;;; Development Environment
 
 ;; Enabled inline static analysis
 (add-hook 'prog-mode-hook #'flymake-mode)
 
-;; LSP Config
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :config
-  (lsp-enable-which-key-integration t))
+;; Environment management
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
 
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode))
+;; Eglot Config 
+(add-hook 'prog-mode-hook #'eglot-ensure)
+(with-eval-after-load 'eglot
+  (setq eglot-autoshutdown t)
+  (define-key eglot-mode-map (kbd "C-c l r") #'eglot-rename)
+  (define-key eglot-mode-map (kbd "C-c l a") #'eglot-code-actions)
+  (define-key eglot-mode-map (kbd "C-c l f") #'eglot-format)
+  (define-key eglot-mode-map (kbd "C-c l d") #'eglot-find-declaration)
+  (define-key eglot-mode-map (kbd "C-c l i") #'eglot-find-implementation))
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(python-mode . ("pyright-langserver" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '(python-mode . ("ruff" "server")))
+  (add-to-list 'eglot-server-programs
+               '(text-mode . ("harper-ls" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '(markdown-mode . ("harper-ls" "--stdio"))))
+
+(setq-default eglot-workspace-configuration
+              '(:harper-ls (:userDictPath ""
+                            :fileDictPath ""
+                            :linters (:SpellCheck t
+                                      :SpelledNumbers :json-false
+                                      :AnA t
+                                      :SentenceCapitalization t
+                                      :UnclosedQuotes t
+                                      :WrongQuotes :json-false
+                                      :LongSentences t
+                                      :RepeatedWords t
+                                      :Spaces t
+                                      :Matcher t
+                                      :CorrectNumberSuffix t)
+                            :codeActions (:ForceStable :json-false)
+                            :markdown (:IgnoreLinkTitle :json-false)
+                            :diagnosticSeverity "hint"
+                            :isolateEnglish :json-false)))
 
 ;; Autocompletion
-(use-package company
-  :after lsp-mode
-  :hook (prog-mode . company-mode)
-  :bind (:map company-active-map
-              ("<tab>" . company-complete-selection))
-  (:map lsp-mode-map
-        ("<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.5))
 
-(use-package company-box
-  :hook (company-mode . company-box-mode))
+;; Enable Completion Preview mode in various buffers
+(add-hook 'prog-mode-hook #'completion-preview-mode)
+(add-hook 'text-mode-hook #'completion-preview-mode)
+(with-eval-after-load 'comint
+  (add-hook 'comint-mode-hook #'completion-preview-mode))
 
+(with-eval-after-load 'completion-preview
+  ;; Show the preview already after two symbol characters
+  (setq completion-preview-minimum-symbol-length 2)
+
+  ;; Non-standard commands to that should show the preview:
+  ;; Org mode has a custom `self-insert-command'
+  (push 'org-self-insert-command completion-preview-commands)
+  ;; Paredit has a custom `delete-backward-char' command
+  (push 'paredit-backward-delete completion-preview-commands)
+
+  ;; Bindings that take effect when the preview is shown:
+  ;; Cycle the completion candidate that the preview shows
+  (keymap-set completion-preview-active-mode-map "M-n" #'completion-preview-next-candidate)
+  (keymap-set completion-preview-active-mode-map "M-p" #'completion-preview-prev-candidate)
+  ;; Convenient alternative to C-i after typing one of the above
+  (keymap-set completion-preview-active-mode-map "M-i" #'completion-preview-insert))
+
+;; Add extensions
+(use-package cape
+  ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
+  ;; Press C-c p ? to for help.
+  :bind ("C-c p" . cape-prefix-map) 
+  :init
+  ;; Add to the global default value of `completion-at-point-functions'
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block))
 
 ;;;; File Explorer
 
@@ -296,23 +351,19 @@
   :after (treemacs magit)
   :ensure t)
 
-(use-package lsp-treemacs
-  :after lsp)
-
 (use-package treemacs-nerd-icons
   :after treemacs
   :config
   (treemacs-load-theme "nerd-icons"))
 
-
 ;;;; Language-Specific Configuration
 
 ;; Python
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp))))  ; or lsp-deferred
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-hook 'python-mode-hook #'eglot-ensure)
+
+;; Mail
+(add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 
 ;; YAML Support
 (use-package yaml-mode)
@@ -320,18 +371,15 @@
 ;; Markdown support
 (use-package markdown-mode)
 
+;;;; AI Integration
+
 (use-package shell-maker
   :straight (:type git :host github :repo "xenodium/shell-maker" :files ("shell-maker*.el")))
 
 (use-package chatgpt-shell
   :straight (:type git :host github :repo "xenodium/chatgpt-shell" :files ("chatgpt-shell*.el"))
   :custom
-  (chatgpt-shell-anthropic-key (getenv "ANTHROPIC_API_KEY"))
-  )
-
-(use-package envrc
-  :hook (after-init . envrc-global-mode))
-
+  (chatgpt-shell-anthropic-key (getenv "ANTHROPIC_API_KEY")))
 
 ;;;; Miscellaneous
 
@@ -340,11 +388,8 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+;; Reduce warnings
 (setq warning-minimum-level :error)
-
-(setq make-backup-files nil) ; stop creating ~ files
-
-(setq sentence-end-double-space nil) ; you monsters
 
 (provide 'init)
 ;;; init.el ends here
