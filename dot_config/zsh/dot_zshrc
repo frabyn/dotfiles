@@ -1,0 +1,124 @@
+# vim: set ft=zsh:
+
+#===============================================================================
+# POWERLEVEL10K INSTANT PROMPT
+#===============================================================================
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+#===============================================================================
+# XDG BASE DIRECTORY SPECIFICATION
+#===============================================================================
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:="$HOME/.cache"}
+export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
+export XDG_STATE_HOME=${XDG_STATE_HOME:="$HOME/.local/state"}
+
+#===============================================================================
+# PATH CONFIGURATION
+#===============================================================================
+export PATH=$HOME/.local/bin:$PATH
+
+# SYSTEM SPECIFIC CONFIGURATION
+source $HOME/.config/zsh/macos.zshrc
+
+#===============================================================================
+# OH-MY-ZSH CONFIGURATION
+#===============================================================================
+export ZSH="$HOME/.config/zsh/oh-my-zsh"
+ZSH_CACHE_DIR="$HOME/.cache/ohmyzsh"
+ZSH_CUSTOM="$HOME/.config/zsh/custom"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+HIST_STAMPS="yyyy-mm-dd"
+export ZSH_DISABLE_COMPFIX=true
+
+# Plugins
+plugins=(git direnv eza fzf uv zoxide zsh-autosuggestions docker)
+
+# Load Oh-My-Zsh
+source $ZSH/oh-my-zsh.sh
+
+#===============================================================================
+# HISTORY CONFIGURATION
+#===============================================================================
+export HISTFILE="$XDG_STATE_HOME/zsh/history"
+export SHELL_SESSION_DIR="$XDG_STATE_HOME/zsh/sessions"
+export SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID"
+setopt INC_APPEND_HISTORY
+
+#===============================================================================
+# UTILITY FUNCTIONS
+#===============================================================================
+# Function to check if a systemd user service is running
+is_systemd_service_running() {
+    systemctl --user is-active --quiet "$1"
+    return $?
+}
+
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+    return $?
+}
+
+#===============================================================================
+# EDITOR & PAGER CONFIGURATION
+#===============================================================================
+# Set EDITOR based on conditions
+if is_systemd_service_running "emacs"; then
+    export EDITOR="emacsclient -nw"
+elif command_exists "nvim"; then
+    export EDITOR="nvim"
+else
+    export EDITOR="vim"
+fi
+
+# Set VISUAL to the same value
+export VISUAL="$EDITOR"
+
+# Prefer bat pager when available
+if command_exists "bat"; then
+  export PAGER="bat"
+else
+  export PAGER="less"
+fi
+
+#===============================================================================
+# ENVIRONMENT VARIABLES
+#===============================================================================
+export GNUPGHOME="$XDG_DATA_HOME/openpgp" 
+export NPM_CONFIG_USERCONFIG="$HOME/.config/npm/npmrc"
+
+#===============================================================================
+# ALIASES
+#===============================================================================
+alias nv="nvim"
+alias e="emacsclient -nw"
+alias m="mutt"
+
+#===============================================================================
+# LOAD SECRETS
+#===============================================================================
+for secret_file in ~/.config/secrets/*.env; do
+    [ -f "$secret_file" ] && source "$secret_file"
+done
+
+#===============================================================================
+# TOOLBOX CONFIGURATION
+#===============================================================================
+if [ -f /run/.toolboxenv ]; then
+    source /run/.containerenv
+    if [ -f ~/.config/containers/toolbox-$name.rc ]; then
+        source ~/.config/containers/toolbox-$name.rc
+    fi
+fi
+
+#===============================================================================
+# THEME CONFIGURATION
+#===============================================================================
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
