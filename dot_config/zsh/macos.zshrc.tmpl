@@ -1,4 +1,9 @@
-{{ if eq .chezmoi.os "darwin" }} # MacOS-specific configuation 
+# MacOS-specific configuation
+# If there's nothing below this,
+# I bet you're not on a Mac
+# Or at least Chezmoi bets
+
+{{ if eq .chezmoi.os "darwin" }} 
 
 export HOMEBREW_NO_ENV_HINTS=true
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
