@@ -1,0 +1,50 @@
+# ThinkPad-inspired swaylock configuration
+
+# Background color (black)
+color=000000
+
+# Text and indicator colors based on the ThinkPad logo
+text-color=ffffff
+text-clear-color=ffffff
+text-caps-lock-color=ffffff
+text-ver-color=ffffff
+text-wrong-color=ffffff
+
+# Ring colors
+ring-color=F1352B         # ThinkPad Red
+ring-clear-color=4DB848   # ThinkPad Green
+ring-caps-lock-color=F1352B # ThinkPad Red
+ring-ver-color=4DB848     # ThinkPad Green
+ring-wrong-color=F1352B   # ThinkPad Red
+
+# Inside colors (with some transparency)
+inside-color=00000088
+inside-clear-color=00000088
+inside-caps-lock-color=00000088
+inside-ver-color=00000088
+inside-wrong-color=00000088
+
+# Line colors
+line-color=347BC4         # ThinkPad Blue
+line-clear-color=4DB848   # ThinkPad Green
+line-caps-lock-color=F1352B # ThinkPad Red
+line-ver-color=4DB848     # ThinkPad Green
+line-wrong-color=F1352B   # ThinkPad Red
+
+# Key highlight color
+key-hl-color=F1352B       # ThinkPad Red
+bs-hl-color=347BC4        # ThinkPad Blue
+
+# Indicator settings
+indicator-radius=100
+indicator-thickness=10
+indicator-y-position=850   # Move down by 30% from center
+
+# Font settings
+font=sans-serif
+font-size=24
+
+# Other settings
+indicator-idle-visible
+show-failed-attempts
+show-keyboard-layout
