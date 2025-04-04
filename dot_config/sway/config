@@ -244,6 +244,7 @@ swaybar_command waybar
 }
 
 exec mako
+exec udiskie —tray
 
 for_window [app_id="emacs"] border none
 for_window [class="1Password"] floating enable

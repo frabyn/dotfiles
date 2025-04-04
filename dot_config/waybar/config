@@ -6,6 +6,7 @@
 
     "modules-left": [
         "sway/workspaces",
+	"tray",
         "sway/mode"
 ],
     "modules-center": [
@@ -17,7 +18,6 @@
         "temperature",
         "battery",
         "wireplumber",
-        "tray",
         "clock#date",
         "clock#time",
 

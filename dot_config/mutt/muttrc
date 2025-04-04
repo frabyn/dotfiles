@@ -28,7 +28,7 @@ mime_lookup application/octet-stream
 set quit = yes
 set sort = threads
 
-set editor = "nvim"
+# set editor = "nvim"
 
 unignore x-mailer
 
