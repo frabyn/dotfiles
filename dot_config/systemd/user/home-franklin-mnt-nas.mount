@@ -1,0 +1,11 @@
+[Unit]
+Description=Synology NAS mount
+After=network-online.target
+Wants=network-online.target
+
+[Mount]
+What=//drivey.cheetah-mountain.ts.net/home
+Where=%h/mnt/nas
+Type=cifs
+Options=credentials=%E/nas-credentials,iocharset=utf8,uid=1000,gid=1000
+

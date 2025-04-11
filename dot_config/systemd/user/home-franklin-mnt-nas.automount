@@ -1,0 +1,10 @@
+# ~/.config/systemd/user/synology.automount
+[Unit]
+Description=Automount Synology NAS
+
+[Automount]
+Where=%h/mnt/nas
+TimeoutIdleSec=1000
+
+[Install]
+WantedBy=default.target
