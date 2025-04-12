@@ -371,16 +371,6 @@
 ;; Markdown support
 (use-package markdown-mode)
 
-;;;; AI Integration
-
-(use-package shell-maker
-  :straight (:type git :host github :repo "xenodium/shell-maker" :files ("shell-maker*.el")))
-
-(use-package chatgpt-shell
-  :straight (:type git :host github :repo "xenodium/chatgpt-shell" :files ("chatgpt-shell*.el"))
-  :custom
-  (chatgpt-shell-anthropic-key (getenv "ANTHROPIC_API_KEY")))
-
 ;;;; Miscellaneous
 
 ;; Store automatic customisation options elsewhere
