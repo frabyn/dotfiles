@@ -122,12 +122,6 @@
   (setq which-key-idle-delay 0.3))
 
 (use-package vertico
-  :bind (:map vertico-map
-              ("C-j" . vertico-next)
-              ("C-k" . vertico-previous)
-              ("C-f" . vertico-exit)
-              :map minibuffer-local-map
-              ("M-h" . backward-kill-word))
   :custom
   (vertico-cycle t)
   :init
@@ -149,11 +143,10 @@
   :straight nil
   :after vertico
   :ensure nil
-  ;; More convenient directory navigation commands
   :bind (:map vertico-map
-              ("RET" . vertico-directory-enter)
-              ("DEL" . vertico-directory-delete-char)
-              ("M-DEL" . vertico-directory-delete-word))
+            ("RET" . vertico-directory-enter)
+            ("DEL" . vertico-directory-delete-char)
+            ("M-DEL" . vertico-directory-delete-word))
   ;; Tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
@@ -163,8 +156,6 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-;; Bind the `magit-status' command to a convenient key.
-(global-set-key (kbd "C-c g") #'magit-status)
 
 ;;;; Development Environment
 
@@ -179,17 +170,11 @@
 (add-hook 'prog-mode-hook #'eglot-ensure)
 (with-eval-after-load 'eglot
   (setq eglot-autoshutdown t)
-  (define-key eglot-mode-map (kbd "C-c l r") #'eglot-rename)
-  (define-key eglot-mode-map (kbd "C-c l a") #'eglot-code-actions)
-  (define-key eglot-mode-map (kbd "C-c l f") #'eglot-format)
-  (define-key eglot-mode-map (kbd "C-c l d") #'eglot-find-declaration)
-  (define-key eglot-mode-map (kbd "C-c l i") #'eglot-find-implementation))
+)
 
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
-               '(python-mode . ("pyright-langserver" "--stdio")))
-  (add-to-list 'eglot-server-programs
-               '(python-mode . ("ruff" "server")))
+               '(python-mode . ("pylsp")))
   (add-to-list 'eglot-server-programs
                '(text-mode . ("harper-ls" "--stdio")))
   (add-to-list 'eglot-server-programs
@@ -230,20 +215,10 @@
   ;; Org mode has a custom `self-insert-command'
   (push 'org-self-insert-command completion-preview-commands)
   ;; Paredit has a custom `delete-backward-char' command
-  (push 'paredit-backward-delete completion-preview-commands)
-
-  ;; Bindings that take effect when the preview is shown:
-  ;; Cycle the completion candidate that the preview shows
-  (keymap-set completion-preview-active-mode-map "M-n" #'completion-preview-next-candidate)
-  (keymap-set completion-preview-active-mode-map "M-p" #'completion-preview-prev-candidate)
-  ;; Convenient alternative to C-i after typing one of the above
-  (keymap-set completion-preview-active-mode-map "M-i" #'completion-preview-insert))
+  (push 'paredit-backward-delete completion-preview-commands))
 
 ;; Add extensions
 (use-package cape
-  ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
-  ;; Press C-c p ? to for help.
-  :bind ("C-c p" . cape-prefix-map) 
   :init
   ;; Add to the global default value of `completion-at-point-functions'
   (add-hook 'completion-at-point-functions #'cape-dabbrev)
@@ -256,9 +231,6 @@
 (use-package treemacs
   :ensure t
   :defer t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
   :config
   (progn
     (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
@@ -332,16 +304,7 @@
       (`(t . _)
        (treemacs-git-mode 'simple)))
 
-    (treemacs-hide-gitignored-files-mode nil))
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t d"   . treemacs-select-directory)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
+    (treemacs-hide-gitignored-files-mode nil)))
 
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-enable-once)
