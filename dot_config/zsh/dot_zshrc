@@ -55,9 +55,15 @@ setopt INC_APPEND_HISTORY
 #===============================================================================
 # Function to check if a systemd user service is running
 is_systemd_service_running() {
-    systemctl --user is-active --quiet "$1"
-    return $?
+    if command -v systemctl >/dev/null 2>&1; then
+        systemctl --user is-active --quiet "$1"
+        return $?
+    else
+        # systemctl not found, silently return false
+        return 1
+    fi
 }
+
 
 # Function to check if a command exists
 command_exists() {
@@ -90,7 +96,7 @@ fi
 #===============================================================================
 # ENVIRONMENT VARIABLES
 #===============================================================================
-export GNUPGHOME="$XDG_DATA_HOME/openpgp" 
+export GNUPGHOME="$XDG_DATA_HOME/openpgp"
 export NPM_CONFIG_USERCONFIG="$HOME/.config/npm/npmrc"
 
 #===============================================================================
