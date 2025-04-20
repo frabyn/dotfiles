@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Set error handling
+set -e
+
+echo "Syncing mail..."
+offlineimap
+
+echo "Opening mutt..."
+mutt
+
+echo "Syncing changes back..."
+offlineimap
+
