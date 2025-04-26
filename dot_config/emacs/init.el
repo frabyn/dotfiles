@@ -312,6 +312,8 @@
 
 ;; Mail
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
+(add-hook 'mail-mode-hook #'visual-line-mode)
+
 
 ;; YAML Support
 (use-package yaml-mode)

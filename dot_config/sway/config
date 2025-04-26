@@ -161,6 +161,11 @@ bindsym $mod+space focus mode_toggle
 # Move focus to the parent container
 bindsym $mod+Shift+plus focus parent
 
+# Capture screen with PrintScreen key using grim
+bindsym Print exec grim ~/Pictures/screenshots/$(date +%Y-%m-%d_%H-%M-%S).png
+
+# Capture selected area with Shift+PrintScreen
+bindsym Shift+Print exec grim -g "$(slurp)" ~/Pictures/screenshots/$(date +%Y-%m-%d_%H-%M-%S).png
 
 # Scratchpad:
 # Move the currently focused window to the scratchpad

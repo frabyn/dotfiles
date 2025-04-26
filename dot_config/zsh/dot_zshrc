@@ -98,6 +98,10 @@ fi
 #===============================================================================
 export GNUPGHOME="$XDG_DATA_HOME/openpgp"
 export NPM_CONFIG_USERCONFIG="$HOME/.config/npm/npmrc"
+export ELECTRON_OZONE_PLATFORM_HINT=wayland
+export VOLTA_HOME="$XDG_DATA_HOME/volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
 
 #===============================================================================
 # ALIASES

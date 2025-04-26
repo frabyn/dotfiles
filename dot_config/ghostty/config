@@ -10,5 +10,5 @@ window-theme = system
 window-height = 45
 window-width = 125
 resize-overlay = never
-background-opacity = .8
+background-opacity = .95
 background-blur = true

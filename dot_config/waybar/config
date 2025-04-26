@@ -16,6 +16,7 @@
         "network",
         "memory",
         "temperature",
+	"custom/battery",
         "battery",
         "wireplumber",
         "clock#date",
@@ -23,7 +24,27 @@
 
     ],
 
-    "battery": {
+"custom/battery": {
+    "interval": 10,
+    "states": {
+        "warning": 30,
+        "critical": 15
+    },
+    "format": " {percentage}%",
+    "format-discharging": "{icon} {percentage}%",
+    "format-icons": [
+        "󰁺",  // Battery empty
+        "󰁼", // Battery quarter
+        "󰁾", // Battery half
+        "󰂀", // Battery three-quarters
+        "󰁹" // Battery full
+    ],
+    "return-type": "json",
+    "exec": "~/.local/bin/tlp-battery.sh",
+    "tooltip": true
+},
+
+"battery": {
         "interval": 10,
         "states": {
             "warning": 30,
