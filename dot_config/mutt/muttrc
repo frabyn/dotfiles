@@ -61,9 +61,13 @@ set query_command = "khard email --parsable --search-in-source-files %s"
 bind editor <Tab> complete-query
 bind editor ^T    complete
 
+# currently broken email filer
 macro index A <pipe-message>~/code/mutt-scripts/file_email_updated.sh
 
+# search and export messages
+macro index,pager E "<shell-escape>~/.local/bin/mutt_search_exporter.sh<enter>" "Custom notmuch search and export"
 
+# search using notmuch with f8
 macro index <F8> \
 "<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
 <shell-escape>notmuch-mutt -r --prompt search<enter>\
@@ -71,18 +75,13 @@ macro index <F8> \
 <enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
 "notmuch: search mail"
 
+# reconstruct a thread with f9
 macro index <F9> \
 "<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
 <pipe-message>notmuch-mutt -r thread<enter>\
 <change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
 <enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
 "notmuch: reconstruct thread"
-
-macro index <F6> \
-"<enter-command>set my_old_pipe_decode=\$pipe_decode my_old_wait_key=\$wait_key nopipe_decode nowait_key<enter>\
-<pipe-message>notmuch-mutt tag -- -inbox<enter>\
-<enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
-"notmuch: remove message from inbox"
 
  macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
  macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"

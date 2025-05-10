@@ -70,6 +70,10 @@ bindsym $mod+Shift+q kill
 # Launcher
 bindsym $mod+d exec $menu
 
+# Utilities
+bindsym $mod+n exec nautilus
+bindsym $mod+c exec gnome-calculator -m keyboard
+
 # Drag floating windows by holding down $mod and left mouse button.
 # Resize them with right mouse button + $mod.
 # Despite the name, also works for non-floating windows.
@@ -119,7 +123,7 @@ workspace "2:main" output *
 #workspace 3 output *
 workspace "3:term" output *
 workspace "4:extra" output *
-
+workspace "5:watch" output *
 # Switch to workspace
 bindsym $mod+1 workspace "1:emacs"
 bindsym $mod+2 workspace "2:main"
@@ -233,11 +237,11 @@ swaybar_command waybar
 
 exec mako
 exec udiskie —tray
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 for_window [app_id="emacs"] border none
 for_window [class="1Password"] floating enable
-for_window [app_id="Nautilus"] floating enable resize down 10ppt up 10ppt
-
+for_window [app_id="org.gnome.Calculator"] floating enable
 
 # exec sworkstyle &> /tmp/sworkstyle.log
 include /etc/sway/config.d/*

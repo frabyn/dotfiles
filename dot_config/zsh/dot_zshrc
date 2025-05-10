@@ -94,6 +94,18 @@ else
 fi
 
 #===============================================================================
+# HISTORY SETTINGS
+#===============================================================================
+
+HISTSIZE=50000      # Number of commands to save in memory during session
+SAVEHIST=50000      # Number of commands to save in history file
+setopt HIST_EXPIRE_DUPS_FIRST  # Delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt HIST_IGNORE_DUPS        # Don't record duplicated commands
+setopt HIST_IGNORE_SPACE       # Don't record commands that start with space
+setopt HIST_VERIFY             # Show command with history expansion before running it
+setopt SHARE_HISTORY           # Share history between different instances of the shell
+
+#===============================================================================
 # ENVIRONMENT VARIABLES
 #===============================================================================
 export GNUPGHOME="$XDG_DATA_HOME/openpgp"
