@@ -323,6 +323,9 @@
 
 ;;;; Miscellaneous
 
+(setq default-frame-alist '((undecorated . t)))
+(scroll-bar-mode -1)
+
 ;; Store automatic customisation options elsewhere
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (when (file-exists-p custom-file)
