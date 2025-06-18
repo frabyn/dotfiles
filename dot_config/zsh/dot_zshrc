@@ -37,7 +37,7 @@ HIST_STAMPS="yyyy-mm-dd"
 export ZSH_DISABLE_COMPFIX=true
 
 # Plugins
-plugins=(git direnv eza fzf uv zoxide zsh-autosuggestions docker)
+plugins=(git direnv eza fzf uv zoxide zsh-autosuggestions docker tailscale)
 
 # Load Oh-My-Zsh
 source $ZSH/oh-my-zsh.sh
