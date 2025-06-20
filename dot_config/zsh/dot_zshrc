@@ -119,6 +119,9 @@ export NVM_DIR="$XDG_DATA_HOME/nvm"
 export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
+# Ansible
+export ANSIBLE_CONFIG="$XDG_CONFIG_HOME/ansible/ansible.cfg"
+
 #===============================================================================
 # ALIASES
 #===============================================================================
