@@ -122,12 +122,16 @@ export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
 # Ansible
 export ANSIBLE_CONFIG="$XDG_CONFIG_HOME/ansible/ansible.cfg"
 
+
 #===============================================================================
 # ALIASES
 #===============================================================================
 alias nv="nvim"
 alias e="emacsclient -nw"
 alias m="mutt"
+alias tss="tailscale status"
+alias tsu="tailscale up"
+alias tsd="tailscale down"
 
 #===============================================================================
 # LOAD SECRETS
