@@ -1,37 +1,59 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run `zed: open default settings` from the
-// command palette
 {
-  "edit_predictions": {
-    "mode": "subtle",
-    "copilot": {
-      "proxy": null,
-      "proxy_no_verify": null
-    },
-    "enabled_in_text_threads": false
-  },
+  // Modern AI assistant configuration
   "agent": {
+    "always_allow_tool_actions": false,
     "default_model": {
-      "provider": "anthropic",
-      "model": "claude-3-7-sonnet-thinking-latest"
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
     },
     "version": "2"
   },
+
+  // Updated theme configuration with system mode support
+  "theme": {
+    "mode": "system", // Automatically switches between light/dark based on system
+    "light": "One Light",
+    "dark": "One Dark"
+  },
+
+  // Enhanced UI settings
+  "cursor_blink": false,
+  "buffer_font_family": "BerkeleyMono Nerd Font",
+  "buffer_font_size": 17,
+  "ui_font_family": "BerkeleyMono Nerd Font",
+  "ui_font_size": 14, // Added explicit UI font size
+
+  // Improved tab and project panel settings
+  "tabs": {
+    "file_icons": true,
+    "git_status": true
+  },
+  "tab_bar": {
+    "show_nav_history_buttons": false
+  },
+  "project_panel": {
+    "indent_size": 16,
+    "dock": "left" // or "right" based on preference
+  },
+
+  // Modern Python configuration with Pyright + Ruff
   "languages": {
     "Python": {
-      "language_servers": ["pylsp"],
+      "language_servers": ["pyright", "ruff"],
       "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "ruff",
-          "arguments": ["format", "--stdin-filename", "{file_path}"]
+      "formatter": [
+        {
+          "code_actions": {
+            "source.organizeImports.ruff": true,
+            "source.fixAll.ruff": true
+          }
+        },
+        {
+          "language_server": {
+            "name": "ruff"
+          }
         }
-      }
+      ]
     },
     "HTML": {
       "format_on_save": "off"
@@ -45,37 +67,53 @@
     "JSON": {
       "soft_wrap": "none"
     },
-    "pylsp": {
-      "initialization_options": {
-        "plugins": {
-          "ruff": {
-            "enabled": true,
-            "lineLength": 77
-          },
-          "pyright": {
-            "enabled": true
-          }
+    "Markdown": {
+      "soft_wrap": "preferred_line_length",
+      "preferred_line_length": 80
+    }
+  },
+
+  // Modern LSP configuration
+  "lsp": {
+    "pyright": {
+      "settings": {
+        "python": {
+          "pythonPath": ".venv/bin/python"
+        },
+        "python.analysis": {
+          "diagnosticMode": "workspace",
+          "typeCheckingMode": "basic" // or "strict" for stricter checking
         }
       }
     }
   },
-  "features": {
-    "edit_prediction_provider": "zed"
-  },
-  "cursor_blink": false,
-  "buffer_font_family": "BerkeleyMono Nerd Font",
-  "buffer_font_size": 17,
-  "ui_font_family": "BerkeleyMono Nerd Font",
-  "theme": {
-    "mode": "dark",
-    "light": "One Light",
-    "dark": "One Dark"
-  },
+
+  // Enhanced terminal configuration
   "terminal": {
+    "font_family": "BerkeleyMono Nerd Font",
     "font_size": 14,
-    "shell": "system"
+    "shell": "system",
+    "detect_venv": {
+      "on": {
+        "activate_script": "default"
+      }
+    }
   },
+
+  // Privacy settings
   "telemetry": {
+    "metrics": false,
     "diagnostics": false
+  },
+
+  // Additional modern features
+  "preferred_line_length": 88, // Python PEP 8 recommended
+  "soft_wrap": "none",
+  "tab_size": 4,
+  "scroll_sensitivity": 2,
+  "show_whitespaces": "selection",
+  "inlay_hints": {
+    "enabled": true,
+    "scroll_debounce_ms": 250
   }
 }
