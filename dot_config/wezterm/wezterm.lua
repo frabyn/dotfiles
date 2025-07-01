@@ -108,6 +108,7 @@ elseif platform.is_linux then
 		{ label = "Zsh", args = { "zsh", "-l" } },
 	}
 	local linux_font = wezterm.font("BerkeleyMono Nerd Font")
+	config.font_size - 16
 	config.font = linux_font
 end
 
