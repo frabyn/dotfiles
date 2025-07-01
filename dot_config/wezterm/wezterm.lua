@@ -55,9 +55,6 @@ config.line_height = 1.15
 
 -- Tab bar configuration
 config.enable_tab_bar = false
-config.hide_tab_bar_if_only_one_tab = true
-config.use_fancy_tab_bar = false
-config.tab_max_width = 40
 
 config.audible_bell = "Disabled"
 config.visual_bell = {
