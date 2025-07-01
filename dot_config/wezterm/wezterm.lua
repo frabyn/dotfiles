@@ -110,6 +110,7 @@ elseif platform.is_linux then
 	local linux_font = wezterm.font("BerkeleyMono Nerd Font")
 	config.font_size = 16
 	config.font = linux_font
+	config.window_decorations = "RESIZE"
 end
 
 return config
