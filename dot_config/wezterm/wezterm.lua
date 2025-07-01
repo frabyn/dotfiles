@@ -45,7 +45,7 @@ config.window_padding = {
 	top = 10,
 	bottom = 7.5,
 }
-config.window_background_opacity = 0.85
+config.window_background_opacity = 0.9
 
 local platform = get_platform()
 
