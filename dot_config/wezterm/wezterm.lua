@@ -54,9 +54,9 @@ config.color_scheme = "Monokai (terminal.sexy)"
 config.line_height = 1.15
 
 -- Tab bar configuration
-config.enable_tab_bar = true
+config.enable_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
-config.use_fancy_tab_bar = true
+config.use_fancy_tab_bar = false
 config.tab_max_width = 40
 
 config.audible_bell = "Disabled"
@@ -97,7 +97,7 @@ elseif platform.is_mac then
   -- local mac_font = wezterm.font("SF Mono Powerline", { weight = "Light" })
 	local mac_font = wezterm.font("Berkeley Mono", { weight = "Regular" })
 	config.font = mac_font
-	config.font_size = 18
+	config.font_size = 20
 	config.initial_rows = 40
 	config.initial_cols = 110
 elseif platform.is_linux then
