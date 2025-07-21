@@ -86,9 +86,9 @@ command_exists() {
 # EDITOR & PAGER CONFIGURATION
 #===============================================================================
 # Set EDITOR based on conditions
-if is_systemd_service_running "emacs"; then
-    export EDITOR="emacsclient -nw"
-elif command_exists "nvim"; then
+# if is_systemd_service_running "emacs"; then
+#    export EDITOR="emacsclient -nw"
+if command_exists "nvim"; then
     export EDITOR="nvim"
 else
     export EDITOR="vim"
@@ -122,8 +122,13 @@ setopt SHARE_HISTORY           # Share history between different instances of th
 export GNUPGHOME="$XDG_DATA_HOME/openpgp"
 export NPM_CONFIG_USERCONFIG="$HOME/.config/npm/npmrc"
 export ELECTRON_OZONE_PLATFORM_HINT=wayland
+
+# TeXLive
 export VOLTA_HOME="$XDG_DATA_HOME/volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
+
+
+
 
 # Node Version Manager
 export NVM_DIR="$XDG_DATA_HOME/nvm"
