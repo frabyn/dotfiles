@@ -49,7 +49,7 @@
 (add-to-list 'default-frame-alist '(width . 100))
 
 ;; Set default font face
-(set-face-attribute 'default nil :font "BerkeleyMono Nerd Font" :height 160)
+(set-face-attribute 'default nil :font "BerkeleyMono Nerd Font Mono" :height 160)
 
 ;; Disable the menu bar
 (menu-bar-mode -1)
@@ -172,15 +172,15 @@
   (setq eglot-autoshutdown t)
 )
 
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '(python-mode . ("pylsp")))
-  (add-to-list 'eglot-server-programs
-               '(text-mode . ("harper-ls" "--stdio")))
-  (add-to-list 'eglot-server-programs
-               '(markdown-mode . ("harper-ls" "--stdio")))
-    (add-to-list 'eglot-server-programs
-               '(mail-mode . ("harper-ls" "--stdio"))))
+;(with-eval-after-load 'eglot
+;  (add-to-list 'eglot-server-programs
+;               '(python-mode . ("pylsp")))
+;  (add-to-list 'eglot-server-programs
+;               '(text-mode . ("harper-ls" "--stdio")))
+;  (add-to-list 'eglot-server-programs
+;               '(markdown-mode . ("harper-ls" "--stdio")))
+;    (add-to-list 'eglot-server-programs
+;               '(mail-mode . ("harper-ls" "--stdio"))))
 
 
 (setq-default eglot-workspace-configuration
@@ -205,28 +205,28 @@
 ;; Autocompletion
 
 ;; Enable Completion Preview mode in various buffers
-(add-hook 'prog-mode-hook #'completion-preview-mode)
-(add-hook 'text-mode-hook #'completion-preview-mode)
-(with-eval-after-load 'comint
-  (add-hook 'comint-mode-hook #'completion-preview-mode))
+;(add-hook 'prog-mode-hook #'completion-preview-mode)
+;(add-hook 'text-mode-hook #'completion-preview-mode)
+;(with-eval-after-load 'comint
+;  (add-hook 'comint-mode-hook #'completion-preview-mode))
 
-(with-eval-after-load 'completion-preview
+;(with-eval-after-load 'completion-preview
   ;; Show the preview already after two symbol characters
-  (setq completion-preview-minimum-symbol-length 2)
+;  (setq completion-preview-minimum-symbol-length 10)
 
   ;; Non-standard commands to that should show the preview:
   ;; Org mode has a custom `self-insert-command'
-  (push 'org-self-insert-command completion-preview-commands)
+;  (push 'org-self-insert-command completion-preview-commands)
   ;; Paredit has a custom `delete-backward-char' command
-  (push 'paredit-backward-delete completion-preview-commands))
+;  (push 'paredit-backward-delete completion-preview-commands))
 
 ;; Add extensions
-(use-package cape
-  :init
+;(use-package cape
+;  :init
   ;; Add to the global default value of `completion-at-point-functions'
-  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-  (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-elisp-block))
+;  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+;  (add-hook 'completion-at-point-functions #'cape-file)
+;  (add-hook 'completion-at-point-functions #'cape-elisp-block))
 
 ;;;; File Explorer
 
@@ -320,6 +320,8 @@
 
 ;; Markdown support
 (use-package markdown-mode)
+(add-hook 'markdown-mode-hook #'visual-line-mode)
+
 
 ;;;; Miscellaneous
 
