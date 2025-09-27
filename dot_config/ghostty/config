@@ -14,4 +14,4 @@ background-opacity = .85
 background-blur = true
 macos-titlebar-style = hidden
 window-decoration = none
-fullscreen = true
+maximize = true
