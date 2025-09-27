@@ -69,6 +69,7 @@
 ;; Window and frame handling
 (setq window-resize-pixelwise t)
 (setq frame-resize-pixelwise t)
+(add-hook 'window-setup-hook 'toggle-frame-maximized t)
 
 ;;;; Theme & Visual Enhancements
 
@@ -244,12 +245,12 @@
           treemacs-position 'left
           treemacs-show-hidden-files t
           treemacs-litter-directories '("/node_modules" "/.venv" "/.cask"))
-    
+
     ;; Enable standard modes
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode t)
-    
+
     ;; Simple git integration if available
     (when (executable-find "git")
       (treemacs-git-mode 'simple)))
