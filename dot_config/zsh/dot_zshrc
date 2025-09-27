@@ -147,7 +147,7 @@ export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
 export ANSIBLE_CONFIG="$XDG_CONFIG_HOME/ansible/ansible.cfg"
 
 export UV_CACHE_DIR="$XDG_DATA_HOME/uv"
-
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_DATA_HOME/aws/credentials"
 
