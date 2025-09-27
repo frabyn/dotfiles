@@ -69,7 +69,6 @@
 ;; Window and frame handling
 (setq window-resize-pixelwise t)
 (setq frame-resize-pixelwise t)
-(add-hook 'window-setup-hook 'toggle-frame-maximized t)
 
 ;;;; Theme & Visual Enhancements
 
