@@ -1,119 +1,114 @@
 {
-  // Modern AI assistant configuration
-  "agent": {
-    "always_allow_tool_actions": false,
-    "default_model": {
-      "provider": "zed.dev",
-      "model": "claude-sonnet-4"
-    },
-    "version": "2"
-  },
-
-  // Updated theme configuration with system mode support
-  "theme": {
-    "mode": "system", // Automatically switches between light/dark based on system
-    "light": "One Light",
-    "dark": "One Dark"
-  },
-
-  // Enhanced UI settings
-  "cursor_blink": false,
-  "buffer_font_family": "BerkeleyMono Nerd Font",
-  "buffer_font_size": 17,
-  "ui_font_family": "BerkeleyMono Nerd Font",
-  "ui_font_size": 14, // Added explicit UI font size
-
-  // Improved tab and project panel settings
-  "tabs": {
-    "file_icons": true,
-    "git_status": true
-  },
-  "tab_bar": {
-    "show_nav_history_buttons": false
-  },
-  "project_panel": {
-    "indent_size": 16,
-    "dock": "left" // or "right" based on preference
-  },
-
-  // Modern Python configuration with Pyright + Ruff
-  "languages": {
-    "Python": {
-      "language_servers": ["pyright", "ruff"],
-      "format_on_save": "on",
-      "formatter": [
-        {
-          "code_actions": {
-            "source.organizeImports.ruff": true,
-            "source.fixAll.ruff": true
-          }
-        },
-        {
-          "language_server": {
-            "name": "ruff"
-          }
+    // Modern AI assistant configuration
+    "agent": {
+        "default_profile": "write",
+        "always_allow_tool_actions": false,
+        "default_model": {
+            "provider": "google",
+            "model": "gemini-2.5-pro"
         }
-      ]
     },
-    "HTML": {
-      "format_on_save": "off"
-    },
-    "CSV": {
-      "soft_wrap": "none"
-    },
-    "TSV": {
-      "soft_wrap": "none"
-    },
-    "JSON": {
-      "soft_wrap": "none"
-    },
-    "Markdown": {
-      "soft_wrap": "preferred_line_length",
-      "preferred_line_length": 80
-    }
-  },
 
-  // Modern LSP configuration
-  "lsp": {
-    "pyright": {
-      "settings": {
-        "python": {
-          "pythonPath": ".venv/bin/python"
+    // Updated theme configuration with system mode support
+    "theme": {
+        "mode": "system", // Automatically switches between light/dark based on system
+        "light": "One Light",
+        "dark": "One Dark"
+    },
+
+    // Enhanced UI settings
+    "cursor_blink": false,
+    "buffer_font_family": "BerkeleyMono Nerd Font Mono",
+    "buffer_font_size": 17,
+    "ui_font_family": "Inter",
+    "ui_font_size": 14, // Added explicit UI font size
+
+    // Improved tab and project panel settings
+    "tabs": {
+        "file_icons": true,
+        "git_status": true
+    },
+    "tab_bar": {
+        "show_nav_history_buttons": false
+    },
+    "project_panel": {
+        "indent_size": 16,
+        "dock": "left" // or "right" based on preference
+    },
+
+    // Modern Python configuration with Pyright + Ruff
+    "languages": {
+        "Python": {
+            "language_servers": ["pyright", "ruff"],
+            "format_on_save": "on",
+            "formatter": [
+                {
+                    "code_actions": {
+                        "source.organizeImports.ruff": true,
+                        "source.fixAll.ruff": true
+                    }
+                },
+                {
+                    "language_server": {
+                        "name": "ruff"
+                    }
+                }
+            ]
         },
-        "python.analysis": {
-          "diagnosticMode": "workspace",
-          "typeCheckingMode": "basic" // or "strict" for stricter checking
+        "HTML": {
+            "format_on_save": "off"
+        },
+        "LaTeX": { "format_on_save": "on", "soft_wrap": "bounded" },
+        "JSON": {
+            "soft_wrap": "none"
+        },
+        "Markdown": {
+            "soft_wrap": "preferred_line_length",
+            "preferred_line_length": 80
         }
-      }
+    },
+
+    // Modern LSP configuration
+    "lsp": {
+        "pyright": {
+            "settings": {
+                "python": {
+                    "pythonPath": ".venv/bin/python"
+                },
+                "python.analysis": {
+                    "diagnosticMode": "workspace",
+                    "typeCheckingMode": "basic" // or "strict" for stricter checking
+                }
+            }
+        }
+    },
+
+    // Enhanced terminal configuration
+    "terminal": {
+        "font_family": "BerkeleyMono Nerd Font Mono",
+        "font_size": 14,
+        "shell": "system",
+        "detect_venv": {
+            "on": {
+                "activate_script": "default"
+            }
+        }
+    },
+
+    // Privacy settings
+    "telemetry": {
+        "metrics": false,
+        "diagnostics": false
+    },
+
+    // Additional modern features
+    "preferred_line_length": 88, // Python PEP 8 recommended
+    "soft_wrap": "none",
+    "tab_size": 4,
+    "scroll_sensitivity": 2,
+    "show_whitespaces": "selection",
+    "inlay_hints": {
+        "enabled": true,
+        "scroll_debounce_ms": 250
     }
-  },
-
-  // Enhanced terminal configuration
-  "terminal": {
-    "font_family": "BerkeleyMono Nerd Font",
-    "font_size": 14,
-    "shell": "system",
-    "detect_venv": {
-      "on": {
-        "activate_script": "default"
-      }
-    }
-  },
-
-  // Privacy settings
-  "telemetry": {
-    "metrics": false,
-    "diagnostics": false
-  },
-
-  // Additional modern features
-  "preferred_line_length": 88, // Python PEP 8 recommended
-  "soft_wrap": "none",
-  "tab_size": 4,
-  "scroll_sensitivity": 2,
-  "show_whitespaces": "selection",
-  "inlay_hints": {
-    "enabled": true,
-    "scroll_debounce_ms": 250
-  }
 }
