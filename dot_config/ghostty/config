@@ -15,3 +15,4 @@ background-blur = true
 macos-titlebar-style = hidden
 window-decoration = none
 maximize = true
+keybind = shift+enter=text:\x1b\r
