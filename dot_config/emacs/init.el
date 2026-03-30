@@ -204,6 +204,10 @@
                '(mail-mode . ("harper-ls" "--stdio")))
   (add-to-list 'eglot-server-programs
                '(message-mode . ("harper-ls" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               `(python-mode . ,(if (executable-find "pylsp")
+                                    '("pylsp")
+                                  '("uvx" "--with" "pylsp-ruff" "--from" "python-lsp-server" "pylsp"))))
   (keymap-set eglot-mode-map "C-c e r" #'eglot-rename)
   (keymap-set eglot-mode-map "C-c e a" #'eglot-code-actions))
 
@@ -230,6 +234,13 @@
                             :markdown (:IgnoreLinkTitle :json-false)
                             :diagnosticSeverity "hint"
                             :isolateEnglish :json-false)))
+
+;;;; Terminal
+
+(use-package eat
+  :bind (("C-c t" . eat)
+         ("C-c T" . eat-project))
+  :hook (eshell-load . eat-eshell-mode))
 
 ;;;; Dired
 
@@ -308,6 +319,9 @@
 
 ;; Python
 (add-hook 'python-mode-hook #'eglot-ensure)
+(add-hook 'python-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook #'eglot-format-buffer nil t)))
 
 ;; YAML
 (use-package yaml-mode
