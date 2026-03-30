@@ -70,6 +70,25 @@
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode))
 
+(use-package dashboard
+  :config
+  (setq dashboard-banner-logo-title nil
+        dashboard-startup-banner 'logo
+        dashboard-center-content t
+        dashboard-vertically-center-content t
+        dashboard-display-icons-p t
+        dashboard-icon-type 'nerd-icons
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t
+        dashboard-items '((recents . 5)
+                          (projects . 5)
+                          (agenda . 5))
+        dashboard-projects-backend 'project-el
+        dashboard-week-agenda t
+        dashboard-filter-agenda-entry 'dashboard-no-filter-agenda
+        )
+  (dashboard-setup-startup-hook))
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
