@@ -19,24 +19,18 @@
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-
-;; Use straight.el for use-package expressions
-(straight-use-package 'use-package)
 
 ;; Use straight.el by default with use-package
 (setq straight-use-package-by-default t)
 
 ;;;; Performance
 
-;; Set a reasonable GC threshold for ongoing operation
-(setq gc-cons-threshold (* 16 1000 1000))
-
-;; Add periodic garbage collection during idle time
+;; Let gcmh manage GC from here on
 (use-package gcmh
   :demand t
   :config
@@ -44,21 +38,19 @@
 
 ;;;; Basic UI Configuration
 
-;; Size initial frame
-(add-to-list 'default-frame-alist '(height . 30))
-(add-to-list 'default-frame-alist '(width . 100))
-
 ;; Set default font face
 (set-face-attribute 'default nil :font "BerkeleyMono Nerd Font Mono" :height 160)
 
-;; Disable the menu bar
+;; Early-init handles menu/tool/scroll bars via default-frame-alist,
+;; but these cover frames created after init and the current frame.
 (menu-bar-mode -1)
-
-;; Disable the tool bar
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (set-fringe-mode 10))
+
+;; Undecorated frames
+(push '(undecorated . t) default-frame-alist)
 
 ;; Disable splash screen
 (setq inhibit-startup-screen t)
@@ -102,7 +94,7 @@
 ;; Enable history and recent files
 (save-place-mode 1)
 (savehist-mode 1)
-(recentf-mode 1)
+(run-with-idle-timer 1 nil #'recentf-mode)
 
 ;; Simplify yes/no prompts
 (defalias 'yes-or-no-p #'y-or-n-p)
@@ -115,11 +107,8 @@
 
 ;;;; Helper Interfaces & Completion
 
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 0.3))
+(which-key-mode 1)
+(setq which-key-idle-delay 0.3)
 
 (use-package vertico
   :custom
@@ -127,9 +116,10 @@
   :init
   (vertico-mode))
 
-(use-package savehist
-  :init
-  (savehist-mode))
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia
   :after vertico
@@ -137,6 +127,14 @@
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
   :init
   (marginalia-mode))
+
+(use-package consult
+  :bind (("C-x b" . consult-buffer)
+         ("C-s" . consult-line)
+         ("M-g g" . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+         ("M-s r" . consult-ripgrep)
+         ("M-s f" . consult-find)))
 
 ;; Configure directory extension.
 (use-package vertico-directory
@@ -150,12 +148,43 @@
   ;; Tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
+;; Autocompletion
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  (corfu-auto-delay 0.2)
+  (corfu-auto-prefix 2)
+  (corfu-cycle t)
+  (corfu-preselect 'prompt)
+  :init
+  (global-corfu-mode)
+  (corfu-popupinfo-mode))
+
+(use-package nerd-icons-corfu
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package cape
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file))
+
+;;;; Project Management
+
+(setq project-switch-commands '((consult-find "Find file" "f")
+                                (consult-ripgrep "Ripgrep" "g")
+                                (consult-buffer "Buffer" "b")
+                                (magit-project-status "Magit" "m")
+                                (project-dired "Dired" "d")
+                                (project-eshell "Eshell" "e")))
+
 ;;;; Git Integration
 
 (use-package magit
+  :defer t
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
-
 
 ;;;; Development Environment
 
@@ -167,21 +196,19 @@
   :hook (after-init . envrc-global-mode))
 
 ;; Eglot Config
-(add-hook 'prog-mode-hook #'eglot-ensure)
 (with-eval-after-load 'eglot
   (setq eglot-autoshutdown t)
-)
+  (add-to-list 'eglot-server-programs
+               '(markdown-mode . ("harper-ls" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '(mail-mode . ("harper-ls" "--stdio")))
+  (keymap-set eglot-mode-map "C-c r" #'eglot-rename)
+  (keymap-set eglot-mode-map "C-c a" #'eglot-code-actions))
 
-;(with-eval-after-load 'eglot
-;  (add-to-list 'eglot-server-programs
-;               '(python-mode . ("pylsp")))
-;  (add-to-list 'eglot-server-programs
-;               '(text-mode . ("harper-ls" "--stdio")))
-;  (add-to-list 'eglot-server-programs
-;               '(markdown-mode . ("harper-ls" "--stdio")))
-;    (add-to-list 'eglot-server-programs
-;               '(mail-mode . ("harper-ls" "--stdio"))))
-
+;; Flymake navigation
+(with-eval-after-load 'flymake
+  (keymap-set flymake-mode-map "M-g n" #'flymake-goto-next-error)
+  (keymap-set flymake-mode-map "M-g p" #'flymake-goto-prev-error))
 
 (setq-default eglot-workspace-configuration
               '(:harper-ls (:userDictPath ""
@@ -202,131 +229,54 @@
                             :diagnosticSeverity "hint"
                             :isolateEnglish :json-false)))
 
-;; Autocompletion
+;;;; Dired
 
-;; Enable Completion Preview mode in various buffers
-;(add-hook 'prog-mode-hook #'completion-preview-mode)
-;(add-hook 'text-mode-hook #'completion-preview-mode)
-;(with-eval-after-load 'comint
-;  (add-hook 'comint-mode-hook #'completion-preview-mode))
-
-;(with-eval-after-load 'completion-preview
-  ;; Show the preview already after two symbol characters
-;  (setq completion-preview-minimum-symbol-length 10)
-
-  ;; Non-standard commands to that should show the preview:
-  ;; Org mode has a custom `self-insert-command'
-;  (push 'org-self-insert-command completion-preview-commands)
-  ;; Paredit has a custom `delete-backward-char' command
-;  (push 'paredit-backward-delete completion-preview-commands))
-
-;; Add extensions
-;(use-package cape
-;  :init
-  ;; Add to the global default value of `completion-at-point-functions'
-;  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-;  (add-hook 'completion-at-point-functions #'cape-file)
-;  (add-hook 'completion-at-point-functions #'cape-elisp-block))
-
-;;;; File Explorer
-
-;; Treemacs
-(use-package treemacs
-  :ensure t
-  :defer t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config
-  (progn
-    ;; Only keep essential customizations
-    (setq treemacs-width 35
-          treemacs-position 'left
-          treemacs-show-hidden-files t
-          treemacs-litter-directories '("/node_modules" "/.venv" "/.cask"))
-
-    ;; Enable standard modes
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode t)
-
-    ;; Simple git integration if available
-    (when (executable-find "git")
-      (treemacs-git-mode 'simple)))
-    :bind
-    (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t d"   . treemacs-select-directory)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
-
-(use-package treemacs-icons-dired
-  :hook (dired-mode . treemacs-icons-dired-enable-once)
-  :ensure t)
-
-(use-package treemacs-magit
-  :after (treemacs magit)
-  :ensure t)
-
-(use-package treemacs-nerd-icons
-  :after treemacs
-  :config
-  (treemacs-load-theme "nerd-icons"))
+(use-package nerd-icons-dired
+  :hook (dired-mode . nerd-icons-dired-mode))
 
 ;;;; Org Mode Configuration
 
 (use-package org
   :config
-  (setq org-startup-indented t        ; Enable org-indent-mode by default
-        org-hide-emphasis-markers t   ; Hide formatting characters
-        org-pretty-entities t         ; Show UTF8 characters
-        org-startup-folded 'content)  ; Start with top-level headings unfolded
+  (setq org-startup-indented t
+        org-hide-emphasis-markers t
+        org-pretty-entities t
+        org-startup-folded 'content
+        org-ellipsis " ▾"
+        org-hide-leading-stars t
+        org-agenda-files '("~/org")
+        org-agenda-window-setup 'current-window
+        org-agenda-span 10
+        org-agenda-start-on-weekday nil
+        org-log-done 'time)
   :hook
-  (org-mode . visual-line-mode))      ; Better line wrapping
+  (org-mode . visual-line-mode))
 
-;; Better bullet points
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
-;; Better org structure display
-(setq org-ellipsis " ▾"               ; Symbol to show folded content
-      org-hide-leading-stars t)       ; Hide leading stars
-
-;; Simple org agenda setup
-(setq org-agenda-files '("~/org")
-      org-agenda-window-setup 'current-window
-      org-agenda-span 10
-      org-agenda-start-on-weekday nil
-      org-log-done 'time)
-
 ;;;; Language-Specific Configuration
 
 ;; Python
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 (add-hook 'python-mode-hook #'eglot-ensure)
+
+;; YAML
+(use-package yaml-mode
+  :hook (yaml-mode . eglot-ensure))
+
+;; Markdown
+(use-package markdown-mode
+  :hook ((markdown-mode . visual-line-mode)
+         (markdown-mode . eglot-ensure)))
 
 ;; Mail
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 (add-hook 'mail-mode-hook #'visual-line-mode)
-
-
-;; YAML Support
-(use-package yaml-mode)
-
-;; Markdown support
-(use-package markdown-mode)
-(add-hook 'markdown-mode-hook #'visual-line-mode)
-
+(add-hook 'mail-mode-hook #'eglot-ensure)
 
 ;;;; Miscellaneous
-
-(setq default-frame-alist '((undecorated . t)))
-(scroll-bar-mode -1)
 
 ;; Store automatic customisation options elsewhere
 (setq custom-file (locate-user-emacs-file "custom.el"))
