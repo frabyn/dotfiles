@@ -202,8 +202,10 @@
                '(markdown-mode . ("harper-ls" "--stdio")))
   (add-to-list 'eglot-server-programs
                '(mail-mode . ("harper-ls" "--stdio")))
-  (keymap-set eglot-mode-map "C-c r" #'eglot-rename)
-  (keymap-set eglot-mode-map "C-c a" #'eglot-code-actions))
+  (add-to-list 'eglot-server-programs
+               '(message-mode . ("harper-ls" "--stdio")))
+  (keymap-set eglot-mode-map "C-c e r" #'eglot-rename)
+  (keymap-set eglot-mode-map "C-c e a" #'eglot-code-actions))
 
 ;; Flymake navigation
 (with-eval-after-load 'flymake
@@ -237,25 +239,70 @@
 ;;;; Org Mode Configuration
 
 (use-package org
+  :bind (("C-c a" . org-agenda)
+         ("C-c c" . org-capture)
+         ("C-c l" . org-store-link))
   :config
+  ;; Visual
   (setq org-startup-indented t
         org-hide-emphasis-markers t
         org-pretty-entities t
         org-startup-folded 'content
         org-ellipsis " ▾"
-        org-hide-leading-stars t
-        org-agenda-files '("~/org")
+        org-hide-leading-stars t)
+
+  ;; TODO workflow
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "IN-PROGRESS(i)" "WAITING(w@)" "|" "DONE(d)" "CANCELLED(c@)"))
+        org-log-done 'time
+        org-log-into-drawer t)
+
+  ;; Agenda
+  (setq org-agenda-files '("~/org")
         org-agenda-window-setup 'current-window
         org-agenda-span 10
-        org-agenda-start-on-weekday nil
-        org-log-done 'time)
+        org-agenda-start-on-weekday nil)
+
+  ;; Refile
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 3))
+        org-refile-use-outline-path 'file
+        org-outline-path-complete-in-steps nil)
+
+  ;; Capture templates
+  (setq org-capture-templates
+        '(("t" "Task" entry (file "~/org/inbox.org")
+           "* TODO %?\n%U\n%a" :empty-lines 1)
+          ("n" "Note" entry (file "~/org/inbox.org")
+           "* %?\n%U\n%a" :empty-lines 1)
+          ("j" "Journal" entry (file+olp+datetree "~/org/journal/journal.org")
+           "* %?\n%U" :empty-lines 1)
+          ("c" "Clock entry" entry (file "~/org/inbox.org")
+           "* TODO %?\n%U" :clock-in t :clock-resume t :empty-lines 1)))
+
+  ;; Clock / timekeeping
+  (setq org-clock-persist 'history
+        org-clock-in-resume t
+        org-clock-out-remove-zero-time-clocks t
+        org-clock-report-include-clocking-task t)
+  (org-clock-persistence-insinuate)
+
+  ;; Source blocks
+  (setq org-confirm-babel-evaluate nil
+        org-src-preserve-indentation t
+        org-src-tab-acts-natively t)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (emacs-lisp . t)
+     (shell . t)))
+
   :hook
   (org-mode . visual-line-mode))
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
   :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  (org-bullets-bullet-list '("◉" "○" "●" "��" "●" "○" "●")))
 
 ;;;; Language-Specific Configuration
 
@@ -271,10 +318,21 @@
   :hook ((markdown-mode . visual-line-mode)
          (markdown-mode . eglot-ensure)))
 
-;; Mail
+;; Mail (mutt)
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 (add-hook 'mail-mode-hook #'visual-line-mode)
 (add-hook 'mail-mode-hook #'eglot-ensure)
+
+;; Mail (notmuch)
+(use-package notmuch
+  :defer t
+  :custom
+  (notmuch-show-logo nil)
+  (notmuch-search-oldest-first nil)
+  (notmuch-fcc-dirs nil)
+  :hook
+  (notmuch-message-mode . visual-line-mode)
+  (notmuch-message-mode . eglot-ensure))
 
 ;;;; Miscellaneous
 
