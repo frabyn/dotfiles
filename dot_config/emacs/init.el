@@ -86,8 +86,9 @@
         dashboard-projects-backend 'project-el
         dashboard-week-agenda t
         dashboard-filter-agenda-entry 'dashboard-no-filter-agenda
-        )
-  (dashboard-setup-startup-hook))
+        dashboard-force-refresh t)
+  (dashboard-setup-startup-hook)
+  (setq initial-buffer-choice (lambda () (get-buffer-create dashboard-buffer-name))))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
