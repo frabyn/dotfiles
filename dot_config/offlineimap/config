@@ -23,7 +23,7 @@ ssl = yes
 remotehost = imaps-proxy.fastmail.com
 
 
-sslcacertfile = OS-DEFAULT
+sslcacertfile = /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
 
 remoteport = 80
 
