@@ -378,5 +378,9 @@
 ;; Reduce warnings
 (setq warning-minimum-level :error)
 
+;; Book
+(load-file "~/code/book/book.el")
+(global-set-key (kbd "C-c b") #'book-dashboard)
+
 (provide 'init)
 ;;; init.el ends here
