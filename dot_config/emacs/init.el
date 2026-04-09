@@ -219,6 +219,8 @@
 (with-eval-after-load 'eglot
   (setq eglot-autoshutdown t)
   (add-to-list 'eglot-server-programs
+               '(typst-ts-mode . ("tinymist")))
+  (add-to-list 'eglot-server-programs
                '(markdown-mode . ("harper-ls" "--stdio")))
   (add-to-list 'eglot-server-programs
                '(mail-mode . ("harper-ls" "--stdio")))
@@ -335,7 +337,32 @@
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "��" "●" "○" "●")))
 
+;;;; Prose Writing
+
+(use-package visual-fill-column
+  :custom
+  (visual-fill-column-width 90)
+  (visual-fill-column-center-text t))
+
+;; Typst
+(add-to-list 'treesit-language-source-alist
+             '(typst "https://github.com/uben0/tree-sitter-typst"))
+(unless (treesit-language-available-p 'typst)
+  (treesit-install-language-grammar 'typst))
+
+(use-package typst-ts-mode
+  :straight (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
+  :custom
+  (typst-ts-mode-watch-options "--open")
+  :hook
+  (typst-ts-mode . visual-line-mode)
+  (typst-ts-mode . visual-fill-column-mode)
+  (typst-ts-mode . (lambda () (display-line-numbers-mode -1))))
+
 ;;;; Language-Specific Configuration
+
+;; Typst
+(add-hook 'typst-ts-mode-hook #'eglot-ensure)
 
 ;; Python
 (add-hook 'python-mode-hook #'eglot-ensure)
