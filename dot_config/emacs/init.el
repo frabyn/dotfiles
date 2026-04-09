@@ -117,7 +117,7 @@
 (run-with-idle-timer 1 nil #'recentf-mode)
 
 ;; Simplify yes/no prompts
-(defalias 'yes-or-no-p #'y-or-n-p)
+(setq use-short-answers t)
 
 ;; Sentence formatting
 (setq sentence-end-double-space nil) ; you monsters
@@ -332,10 +332,8 @@
   :hook
   (org-mode . visual-line-mode))
 
-(use-package org-bullets
-  :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "��" "●" "○" "●")))
+(use-package org-superstar
+  :hook (org-mode . org-superstar-mode))
 
 ;;;; Prose Writing
 
@@ -345,6 +343,7 @@
   (visual-fill-column-center-text t))
 
 ;; Typst
+(require 'treesit)
 (add-to-list 'treesit-language-source-alist
              '(typst "https://github.com/uben0/tree-sitter-typst"))
 (unless (treesit-language-available-p 'typst)
@@ -355,14 +354,12 @@
   :custom
   (typst-ts-mode-watch-options "--open")
   :hook
+  (typst-ts-mode . eglot-ensure)
   (typst-ts-mode . visual-line-mode)
   (typst-ts-mode . visual-fill-column-mode)
   (typst-ts-mode . (lambda () (display-line-numbers-mode -1))))
 
 ;;;; Language-Specific Configuration
-
-;; Typst
-(add-hook 'typst-ts-mode-hook #'eglot-ensure)
 
 ;; Python
 (add-hook 'python-mode-hook #'eglot-ensure)
@@ -406,7 +403,7 @@
 (setq warning-minimum-level :error)
 
 ;; Book
-(load-file "~/code/book/book.el")
+(load-file "/home/franklin/code/book/book.el")
 (global-set-key (kbd "C-c b") #'book-dashboard)
 
 (provide 'init)
