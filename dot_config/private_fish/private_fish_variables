@@ -1,0 +1,5 @@
+# This file contains fish universal variable definitions.
+# VERSION: 3.0
+SETUVAR __fish_initialized:4300
+SETUVAR fish_greeting:
+SETUVAR fish_user_paths:/home/franklin/\x2elocal/share/texlive/2025/bin/x86_64\x2dlinux\x1e/home/franklin/\x2elocal/share/cargo/bin\x1e/home/franklin/\x2elocal/bin
