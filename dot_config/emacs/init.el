@@ -374,6 +374,8 @@
 ;; Markdown
 (use-package markdown-mode
   :hook ((markdown-mode . visual-line-mode)
+         (markdown-mode . visual-fill-column-mode)
+         (markdown-mode . (lambda () (display-line-numbers-mode -1)))
          (markdown-mode . eglot-ensure)))
 
 ;; Mail (mutt)
